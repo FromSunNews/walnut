@@ -1,6 +1,6 @@
 import React from "react"
 import { Cloud, Server, FileText, PlusCircle, LayoutDashboard } from "lucide-react"
-import TaskStatus from "../TaskStatus"
+// import TaskStatus from "../TaskStatus"
 import WalnetWorker from "../WalnetWorker"
 import WalnetCloud from "../WalnetCloud"
 // import WalnetWorker from "../walletworker"
@@ -56,7 +56,7 @@ export const menuItems = {
           title: "Task Status",
           component: "task-status",
           path: "Dashboard/Task Status",
-          componentData: <TaskStatus />
+          componentData: <div>Task Status</div>
         }
       ]
     }

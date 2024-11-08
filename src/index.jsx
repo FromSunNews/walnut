@@ -8,12 +8,22 @@ import React, { Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AptosWalletProvider } from "@razorlabs/wallet-kit";
 
 import App from "./App";
 import store from "./reducers";
-
 import { Toaster } from "./components/shared/toaster";
+
+// Sui Wallet
+import {
+  createNetworkConfig,
+  SuiClientProvider,
+  WalletProvider,
+} from "@mysten/dapp-kit";
+import { getFullnodeUrl } from "@mysten/sui/client";
+
+const { networkConfig } = createNetworkConfig({
+  testnet: { url: getFullnodeUrl("testnet") },
+});
 
 const queryClient = new QueryClient();
 
@@ -28,12 +38,13 @@ root.render(
     }
   >
     <QueryClientProvider client={queryClient}>
-      <AptosWalletProvider>
-        <Provider store={store}>
-          <App />
-        </Provider>
-        <Toaster />
-      </AptosWalletProvider>
+      <SuiClientProvider networks={networkConfig}>
+        <WalletProvider>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </WalletProvider>
+      </SuiClientProvider>
     </QueryClientProvider>
   </Suspense>
 );

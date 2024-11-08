@@ -22,11 +22,8 @@ import { toast } from "../../shared/use-toast";
 // Import hooks
 
 // Import utils
-// import { DNetABI } from "../utils/abi";
-// import { useWallet } from "../hooks/useWallet";
 
 export default function WalnetCloud() {
-  // const { account, signAndSubmitTransaction, waitTransaction } = useWallet();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedClusterType, setSelectedClusterType] = useState(null);
   const [selectedLocations, setSelectedLocations] = useState([]);

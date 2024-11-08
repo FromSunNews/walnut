@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Battery from "../../components/shared/Battery";
 import { Icon, Image } from "../../utils/general";
 import "./back.scss";
-import { AptosConnectButton, ErrorCode } from "@razorlabs/wallet-kit";
-
-import "@razorlabs/wallet-kit/style.css";
-
-// Import hooks
-import { useAccount } from "../../hooks/useAccount";
+import {
+  ConnectButton,
+  useConnectWallet,
+  useCurrentAccount,
+  useDisconnectWallet,
+  useWallets,
+} from "@mysten/dapp-kit";
 
 export const Background = () => {
   const wall = useSelector((state) => state.wallpaper);
@@ -73,15 +74,18 @@ export const BootScreen = (props) => {
 };
 
 export const LockScreen = (props) => {
-  const dispatch = useDispatch();
-
   const wall = useSelector((state) => state.wallpaper);
   const [lock, setLock] = useState(false);
   const [unlocked, setUnLock] = useState(false);
   const [password, setPass] = useState("");
   const [passType, setType] = useState(1);
   const [forgot, setForget] = useState(false);
-  const { account, handleLogin } = useAccount();
+  const dispatch = useDispatch();
+
+  const wallets = useWallets();
+  const { mutate: connect } = useConnectWallet();
+  const { mutate: disconnect } = useDisconnectWallet();
+  const account = useCurrentAccount();
 
   const userName = useSelector((state) => state.setting.person.name);
 
@@ -116,9 +120,10 @@ export const LockScreen = (props) => {
     if (e.key == "Enter") proceed();
   };
 
-  React.useEffect(() => {
-    if (!account) return;
-    proceed();
+  useEffect(() => {
+    if (account) {
+      proceed();
+    }
   }, [account]);
 
   return (
@@ -126,7 +131,7 @@ export const LockScreen = (props) => {
       className={"lockscreen " + (props.dir == -1 ? "slowfadein" : "")}
       data-unlock={unlocked}
       style={{
-        backgroundImage: `url(${`img/wallpaper/lock.jpg`})`,
+        backgroundImage: `url(${`img/wallpaper/walrus-lock.png`})`,
       }}
       onClick={action}
       data-action="splash"
@@ -151,71 +156,61 @@ export const LockScreen = (props) => {
       <div className="fadeinScreen" data-faded={!lock} data-unlock={unlocked}>
         <Image
           className="rounded-full overflow-hidden"
-          src="img/asset/prof.jpg"
-          w={200}
+          src="img/asset/walrus.png"
+          w={150}
+          h={150}
           ext
         />
         <div className="mt-2 text-2xl font-medium text-gray-200">
           {userName}
         </div>
-        {/* <div className="flex items-center mt-6 signInBtn" onClick={proceed}>
-          Sign in
-        </div> */}
+
+        <p className="flex items-center mt-6 text-white">
+          You must install
+          <a
+            rel="noreferrer"
+            target="_blank"
+            className="p-1"
+            href="https://chromewebstore.google.com/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil"
+          >
+            Sui Wallet
+          </a>
+          first
+        </p>
+
         <div>
-          {/* <button
-            className="flex items-center mt-6 signInBtn cursor-pointer"
-            onClick={() => {
-              handleLogin();
-            }}
-          >
-            Sign in
-          </button> */}
-          <AptosConnectButton
-            className="flex justify-center mt-6 signInBtn cursor-pointer !w-fit"
-            style={{ marginTop: "16px" }}
-            onConnectSuccess={(name) => {
-              console.log("connect success: ", name);
-            }}
-            onConnectError={(err) => {
-              //@ts-ignore
-              if (err.code === ErrorCode.WALLET__CONNECT_ERROR__USER_REJECTED) {
-                console.warn(
-                  "user rejected the connection to " + err.details?.wallet
-                );
-              } else {
-                console.warn("unknown connect error: ", err);
-              }
-            }}
-            onDisconnectSuccess={(name) => {
-              console.log("disconnect success: ", name);
-            }}
-            onDisconnectError={(err) => {
-              console.log("disconnect error: ", err);
-            }}
-          >
-            Sign in
-          </AptosConnectButton>
+          {wallets.map((wallet) => {
+            if (wallet.name !== "Sui Wallet") return null;
+            return (
+              <ConnectButton
+                key={wallet.name}
+                className="flex items-center mt-6 signInBtn"
+                onClick={() => {
+                  connect(
+                    { wallet },
+                    {
+                      onSuccess: () => {
+                        console.log("connected");
+                        proceed();
+                      },
+                    }
+                  );
+                }}
+              />
+            );
+          })}
         </div>
 
-        {/*   <input type={passType?"text":"password"} value={password} onChange={action}
-              data-action="inpass" onKeyDown={action2} placeholder={passType?"Password":"PIN"}/>
-          <Icon className="-ml-6 handcr" fafa="faArrowRight" width={14}
-            color="rgba(170, 170, 170, 0.6)" onClick={proceed}/>
-        </div>
-        <div className="text-xs text-gray-400 mt-4 handcr"
-          onClick={proceed}>
-          {!forgot?`I forgot my ${passType?"password":"pin"}`:"Not my problem"}
-        </div>
-        <div className="text-xs text-gray-400 mt-6">
-          Sign-in options
-        </div>
-        <div className="lockOpt flex">
-          <Icon src="pinlock" onClick={action} ui width={36}
-            click="pinlock" payload={passType==0}/>
-          <Icon src="passkey" onClick={action} ui width={36}
-            click="passkey" payload={passType==1}/>
-        </div> */}
+        {account && (
+          <button
+            className="flex items-center mt-6 signInBtn"
+            onClick={() => disconnect()}
+          >
+            Disconnect
+          </button>
+        )}
       </div>
+
       <div className="bottomInfo flex">
         <Icon className="mx-2" src="wifi" ui width={16} invert />
         <Battery invert />

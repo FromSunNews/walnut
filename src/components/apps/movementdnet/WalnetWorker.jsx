@@ -8,13 +8,11 @@ import {
 } from "react-icons/fa";
 import { MdInfoOutline, MdSearch } from "react-icons/md";
 
-// import { useWallet } from "../hooks/useWallet";
 import { StepProgress } from "./StepProgress";
 import { DEVICE_TYPES, OPERATING_SYSTEMS } from "./utils/workerSteps";
 import { toast } from "../../shared/use-toast";
 
 export default function WalnetWorker() {
-  // const { account, signAndSubmitTransaction, waitTransaction } = useWallet();
   const [currentStep, setCurrentStep] = useState(1);
   const [deviceName, setDeviceName] = useState("");
   const [selectedOS, setSelectedOS] = useState("");
@@ -85,39 +83,36 @@ export default function WalnetWorker() {
     }
   };
 
-  const handleAuthorizeDevice = () => {
-    handleNextStep();
-  }
-  // const handleAuthorizeDevice = async () => {
-  //   if (!account) {
-  //     toast.error("Please connect your wallet first!");
-  //     return;
-  //   }
+  const handleAuthorizeDevice = async () => {
+    if (!account) {
+      toast.error("Please connect your wallet first!");
+      return;
+    }
 
-  //   try {
-  //     const transactionId = await signAndSubmitTransaction({
-  //       signer: account.address,
-  //       // Add necessary transaction details here
-  //     });
+    try {
+      const transactionId = await signAndSubmitTransaction({
+        signer: account.address,
+        // Add necessary transaction details here
+      });
 
-  //     const result = await waitTransaction(transactionId);
+      const result = await waitTransaction(transactionId);
 
-  //     console.log("Authorization Result:", result);
+      console.log("Authorization Result:", result);
 
-  //     toast({
-  //       title: "Device Authorization",
-  //       description: "Device authorized successfully",
-  //     });
+      toast({
+        title: "Device Authorization",
+        description: "Device authorized successfully",
+      });
 
-  //     handleNextStep();
-  //   } catch (error) {
-  //     console.error("Error authorizing device:", error);
-  //     toast({
-  //       title: "Error",
-  //       description: "Failed to authorize device. Please try again.",
-  //     });
-  //   }
-  // };
+      handleNextStep();
+    } catch (error) {
+      console.error("Error authorizing device:", error);
+      toast({
+        title: "Error",
+        description: "Failed to authorize device. Please try again.",
+      });
+    }
+  };
 
   const renderNavigationButtons = () => {
     const isFirstStep = currentStep === 1;

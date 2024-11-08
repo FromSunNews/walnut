@@ -351,12 +351,6 @@ const apps = [
     payload: "https://x.com/Walnet363756",
   },
   {
-    name: "Aptodigi",
-    icon: "aptodigi",
-    type: "app",
-    action: "APTODIGI",
-  },
-  {
     name: "Wecastle",
     icon: "wecastle",
     type: "app",
