@@ -1,22 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  FaDesktop,
   FaWindows,
   FaCheck,
   FaArrowLeft,
   FaArrowRight,
+  FaMicrochip,
 } from "react-icons/fa";
 import { MdInfoOutline, MdSearch } from "react-icons/md";
 
 import { StepProgress } from "./StepProgress";
 import { DEVICE_TYPES, OPERATING_SYSTEMS } from "./utils/workerSteps";
-import { toast } from "../../shared/use-toast";
+
+import { useCurrentAccount } from '@mysten/dapp-kit';
+
+import {
+  Hash,
+  Globe,
+  Cpu,
+  Activity,
+  Layers,
+  Share2
+} from 'lucide-react';
+
+import { useRegisterNode } from "../../../hooks/useRegisterNode";
 
 export default function WalnetWorker() {
+  const account = useCurrentAccount();
   const [currentStep, setCurrentStep] = useState(1);
   const [deviceName, setDeviceName] = useState("");
   const [selectedOS, setSelectedOS] = useState("");
   const [selectedDeviceType, setSelectedDeviceType] = useState("");
+  const [nodeInfo, setNodeInfo] = useState(null);
+  const [showDashboardButton, setShowDashboardButton] = useState(false);
 
   const STEPS = [
     {
@@ -39,9 +54,9 @@ export default function WalnetWorker() {
     },
     {
       id: 4,
-      title: "Select Device Type",
-      description: "Specify whether your device is a desktop or mobile device.",
-      icon: FaDesktop
+      title: "Select Computing Type",
+      description: "Specify whether your device is a CPU or GPU device.",
+      icon: FaMicrochip
     },
     {
       id: 5,
@@ -53,12 +68,6 @@ export default function WalnetWorker() {
       id: 6,
       title: "Authorize your device",
       description: "Authorize your device to connect it to the network.",
-      icon: FaCheck
-    },
-    {
-      id: 7,
-      title: "You're all set!",
-      description: "Congratulations! Your device is now connected and ready to work.",
       icon: FaCheck
     }
   ];
@@ -83,57 +92,34 @@ export default function WalnetWorker() {
     }
   };
 
-  const handleAuthorizeDevice = async () => {
-    if (!account) {
-      toast.error("Please connect your wallet first!");
-      return;
-    }
-
-    try {
-      const transactionId = await signAndSubmitTransaction({
-        signer: account.address,
-        // Add necessary transaction details here
-      });
-
-      const result = await waitTransaction(transactionId);
-
-      console.log("Authorization Result:", result);
-
-      toast({
-        title: "Device Authorization",
-        description: "Device authorized successfully",
-      });
-
+  const { registerNode, isAuthorizing } = useRegisterNode({
+    onSuccess: (nodeData) => {
+      setNodeInfo(nodeData);
       handleNextStep();
-    } catch (error) {
-      console.error("Error authorizing device:", error);
-      toast({
-        title: "Error",
-        description: "Failed to authorize device. Please try again.",
-      });
     }
-  };
+  });
 
   const renderNavigationButtons = () => {
     const isFirstStep = currentStep === 1;
     const isLastStep = currentStep === STEPS.length;
     const isAuthStep = currentStep === 6;
+    const canProceed = isAuthStep ? nodeInfo !== null : !isNextDisabled();
 
     return (
       <div className="flex justify-end space-x-3">
-        {!isFirstStep && !isLastStep && !isAuthStep && (
+        {!isFirstStep && !isLastStep && (
           <button
-            className="text-base bg-white/10 text-white px-3 py-1.5 rounded-md hover:bg-white/20 transition duration-300 flex items-center"
+            className="text-base bg-sidebar/30 text-white px-3 py-1.5 rounded-md hover:bg-sidebar-foreground/10 transition duration-300 flex items-center"
             onClick={handlePreviousStep}
           >
             <FaArrowLeft className="mr-1.5 w-3 h-3" /> Back
           </button>
         )}
-        {!isFirstStep && !isLastStep && !isAuthStep && (
+        {!isFirstStep && !isLastStep && canProceed && (
           <button
-            className="bg-blue-600 cursor-pointer text-base text-white px-3 py-1.5 rounded-md hover:bg-blue-700 transition duration-300 flex items-center"
+            className="bg-sidebar-primary/20 border border-sidebar-primary text-sidebar-primary-foreground cursor-pointer text-base px-3 py-1.5 rounded-md hover:bg-sidebar-primary/90 transition duration-300 flex items-center"
             onClick={handleNextStep}
-            disabled={isNextDisabled()}
+            disabled={!canProceed}
           >
             Next <FaArrowRight className="ml-1.5 w-3 h-3" />
           </button>
@@ -141,6 +127,16 @@ export default function WalnetWorker() {
       </div>
     );
   };
+
+  useEffect(() => {
+    if (nodeInfo) {
+      const timer = setTimeout(() => {
+        setShowDashboardButton(true);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [nodeInfo]);
 
   return (
     <div className="flex h-full">
@@ -180,10 +176,10 @@ export default function WalnetWorker() {
             {currentStep === 1 && (
               <div className="flex items-center justify-center py-16">
                 <button
-                  className="bg-sidebar-primary text-sidebar-primary-foreground px-5 py-2.5 rounded-md hover:bg-sidebar-primary/90 transition-all duration-300 text-base"
+                  className="bg-sidebar-primary/20 border border-sidebar-primary text-sidebar-primary-foreground px-5 py-2.5 rounded-md hover:bg-sidebar-primary/90 transition-all duration-300 text-base"
                   onClick={handleNextStep}
                 >
-                  Connect New Worker +
+                  Connect New Worker
                 </button>
               </div>
             )}
@@ -253,29 +249,138 @@ walnet-worker start --name "${deviceName}" --os "${selectedOS}" --type "${select
             )}
 
             {currentStep === 6 && (
-              <div className="text-center py-8">
-                <button
-                  className="bg-sidebar-primary text-sidebar-primary-foreground px-5 py-2.5 rounded-md hover:bg-sidebar-primary/90 transition-all duration-300 text-base font-medium"
-                  onClick={handleAuthorizeDevice}
-                >
-                  Authorize Device
-                </button>
-              </div>
-            )}
+              <>
+                {
+                  nodeInfo ?
+                    (
+                      <div className="space-y-6">
+                        <div className="bg-sidebar/30 border border-border rounded-lg p-6">
+                          <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-lg font-medium text-foreground">
+                              Node Information
+                            </h3>
+                            {nodeInfo && showDashboardButton && (
+                              <button
+                                className="bg-sidebar-primary text-sidebar-primary-foreground px-4 py-2 rounded-md hover:bg-sidebar-primary/90 transition-all duration-300 text-base"
+                                onClick={() => null}
+                              >
+                                Go to Dashboard
+                              </button>
+                            )}
+                          </div>
 
-            {currentStep === 7 && (
-              <div className="text-center py-8">
-                <p className="text-base text-muted-foreground mb-4">
-                  Your device has been successfully connected and authorized.
-                </p>
-                <FaCheck className="w-10 h-10 text-green-500 mx-auto mb-4" />
-                <button
-                  className="bg-sidebar-primary text-sidebar-primary-foreground px-4 py-2 rounded-md hover:bg-sidebar-primary/90 transition-all duration-300 text-base"
-                  onClick={() => setCurrentStep(1)}
-                >
-                  Connect Another Device
-                </button>
-              </div>
+                          <div className="grid grid-cols-2 gap-6">
+                            {/* ID */}
+                            <div className="space-y-2">
+                              <div className="flex items-center space-x-2">
+                                <Hash className="w-4 h-4 text-muted-foreground" />
+                                <p className="text-sm text-muted-foreground">
+                                  ID
+                                </p>
+                              </div>
+                              <p className="text-base font-medium text-foreground">
+                                {nodeInfo.id}
+                              </p>
+                            </div>
+
+                            {/* IP Address */}
+                            <div className="space-y-2">
+                              <div className="flex items-center space-x-2">
+                                <Globe className="w-4 h-4 text-muted-foreground" />
+                                <p className="text-sm text-muted-foreground">
+                                  IP Address
+                                </p>
+                              </div>
+                              <p className="text-base font-medium text-foreground">
+                                {nodeInfo.ip}
+                              </p>
+                            </div>
+
+                            {/* Architecture */}
+                            <div className="space-y-2">
+                              <div className="flex items-center space-x-2">
+                                <Layers className="w-4 h-4 text-muted-foreground" />
+                                <p className="text-sm text-muted-foreground">
+                                  Architecture
+                                </p>
+                              </div>
+                              <p className="text-base font-medium text-foreground">
+                                {nodeInfo.architecture}
+                              </p>
+                            </div>
+
+                            {/* Status */}
+                            <div className="space-y-2">
+                              <div className="flex items-center space-x-2">
+                                <Activity className="w-4 h-4 text-muted-foreground" />
+                                <p className="text-sm text-muted-foreground">
+                                  Status
+                                </p>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <div
+                                  className={`w-2 h-2 rounded-full ${nodeInfo.state.name === "running"
+                                    ? 'bg-green-600'
+                                    : 'bg-red-500'
+                                    }`}
+                                />
+                                <p className="text-base font-medium text-foreground">
+                                  {nodeInfo.state.name}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* CPU Info */}
+                          <div className="mt-6 pt-6 border-t border-border">
+                            <div className="grid grid-cols-2 gap-6">
+                              <div className="space-y-2">
+                                <div className="flex items-center space-x-2">
+                                  <Cpu className="w-4 h-4 text-muted-foreground" />
+                                  <p className="text-sm text-muted-foreground">
+                                    CPU Cores
+                                  </p>
+                                </div>
+                                <p className="text-base font-medium text-foreground">
+                                  {nodeInfo.cpu.core}
+                                </p>
+                              </div>
+                              <div className="space-y-2">
+                                <div className="flex items-center space-x-2">
+                                  <Share2 className="w-4 h-4 text-muted-foreground" />
+                                  <p className="text-sm text-muted-foreground">
+                                    Threads per Core
+                                  </p>
+                                </div>
+                                <p className="text-base font-medium text-foreground">
+                                  {nodeInfo.cpu.threadPerCore}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                    : (
+                      <div className="mt-4">
+                        <button
+                          className="w-full bg-sidebar-primary/20 border border-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90 px-4 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                          onClick={() => registerNode(account, selectedDeviceType)}
+                          disabled={isAuthorizing}
+                        >
+                          {isAuthorizing ? (
+                            <>
+                              <div className="animate-spin rounded-full h-5 w-5 border-2 border-sidebar-accent border-t-sidebar-primary-foreground"></div>
+                              <span>Authorizing Node...</span>
+                            </>
+                          ) : (
+                            <span>Authorize Node</span>
+                          )}
+                        </button>
+                      </div>
+                    )
+                }
+              </>
             )}
           </div>
         </div>

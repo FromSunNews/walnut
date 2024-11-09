@@ -3,6 +3,7 @@ import { Cloud, Server, FileText, PlusCircle, LayoutDashboard } from "lucide-rea
 // import TaskStatus from "../TaskStatus"
 import WalnetWorker from "../WalnetWorker"
 import WalnetCloud from "../WalnetCloud"
+import SubmitTask from "../SubmitTask"
 // import WalnetWorker from "../walletworker"
 
 export const menuItems = {
@@ -19,7 +20,7 @@ export const menuItems = {
       title: "Submit Task",
       component: "submit-task",
       path: "Submit Task",
-      componentData: <div>Submit Task</div>,
+      componentData: <SubmitTask />,
       icon: FileText,
       isActive: true,
     }

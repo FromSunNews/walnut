@@ -17,6 +17,13 @@ const config = ({ mode }) => {
     ],
     server: {
       https: true,
+      proxy: {
+        '/api': {
+          target: 'http://54.179.58.119:5000',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '')
+        }
+      }
     },
     base: "",
     define: {

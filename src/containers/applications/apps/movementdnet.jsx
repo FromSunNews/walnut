@@ -23,7 +23,7 @@ export const MovementDNet = () => {
 
   return (
     <div
-      className="relative flex floatTab dpShad bg-red-900 overflow-hidden"
+      className="relative flex floatTab dpShad bg-sidebar overflow-hidden"
       data-size={wnapp.size}
       data-max={wnapp.max}
       style={{

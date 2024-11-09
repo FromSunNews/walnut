@@ -1,153 +1,285 @@
-// import { useAptosWallet } from "@razorlabs/wallet-kit";
-// import {
-//   FaCloudUploadAlt,
-//   FaMicrochip,
-//   FaCoins,
-//   FaInfoCircle,
-// } from "react-icons/fa";
-// import { toast, ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { use, useEffect, useRef, useState } from 'react';
+import { CodeJar } from 'codejar';
+import Prism from 'prismjs';
+import 'prismjs/themes/prism-tomorrow.css';
+import 'prismjs/components/prism-python';
+import 'prismjs/components/prism-javascript';
+import { FaPlay, FaCode, FaTerminal } from 'react-icons/fa';
+import { useToast } from "../../shared/use-toast";
+import { useExecutePython } from '../../../hooks/useExecutePython';
+import { useCurrentAccount } from '@mysten/dapp-kit';
 
-// // Import components
-// // import { toast } from "../../shared/use-toast";
+export default function SubmitTask() {
+  const editorRef = useRef(null);
+  const [code, setCode] = useState('# Write your code here\n');
+  const [output, setOutput] = useState('');
+  const [language, setLanguage] = useState('python');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const { executePython, isExecuting } = useExecutePython({
+    onSuccess: (data) => {
+      setOutput(data.output || 'No output');
+    }
+  });
+  const account = useCurrentAccount();
 
-// // Import hooks
-// import { useAccount } from "../../../hooks/useAccount";
+  useEffect(() => {
+    if (editorRef.current) {
+      const highlight = editor => {
+        const code = editor.textContent;
+        editor.innerHTML = Prism.highlight(code, Prism.languages[language], language);
+      };
 
-// // Import utils
-// import { MovementDNetABI } from "./utils/abi";
-// import { aptosClient } from "../../../utils/aptos_client";
+      const jar = CodeJar(editorRef.current, highlight, {
+        tab: '  ',
+        indentOn: /[\[({]$/,
+        catchTab: true,
+        preserveIdent: true,
+        addClosing: true,
+        history: true
+      });
 
-// export default function SubmitTask() {
-//   const { account, metadata, refreshBalance } = useAccount();
-//   const { signAndSubmitTransaction } = useAptosWallet();
+      jar.onUpdate(code => setCode(code));
 
-//   const handleSubmit = async function (e) {
-//     e.preventDefault();
+      return () => jar.destroy();
+    }
+  }, [language]);
 
-//     if (!account) {
-//       toast.error("Please connect your wallet first!");
-//       return;
-//     }
+  const handleSubmit = async () => {
+    if (!code.trim()) {
+      toast({
+        title: "Error",
+        description: "Please write some code first",
+        variant: "destructive"
+      });
+      return;
+    }
 
-//     const { target } = e;
-//     const taskType = target["task_type"].value;
-//     const computeUnits = target["compute_units"].value;
-//     const reward = target["reward"].value;
+    setIsSubmitting(true);
+    try {
+      const result = await executePython(account, code, {
+        processor: 0, // CPU
+        clusterType: 1,
+        rewardAmount: 100
+      });
 
-//     if (reward >= metadata.balance) {
-//       toast.error("Insufficient balance!");
-//       return;
-//     }
+      if (result) {
+        toast({
+          title: "Success",
+          description: "Task submitted successfully",
+          variant: "success"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to submit task",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-//     try {
-//       const response = await signAndSubmitTransaction({
-//         sender: account.address,
-//         payload: {
-//           function: `${MovementDNetABI.address}::network::submit_task`,
-//           typeArguments: [],
-//           functionArguments: [taskType, computeUnits, reward],
-//         },
-//       });
-//       console.log("response signAndSubmitTransaction", response);
+  return (
+    <div className="min-h-screen p-6 animate-fade-in">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Header với animation */}
+        <div className="bg-sidebar/20 backdrop-blur-2xl rounded-xl border border-sidebar-border/50 p-6 shadow-xl animate-slide-down">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-sidebar-primary/20 p-2 rounded-lg animate-pulse-slow">
+                <FaCode className="text-xl text-sidebar-primary" />
+              </div>
+              <div className="flex flex-col">
+                <h1 className="text-lg font-bold text-sidebar-foreground animate-fade-in">
+                  Submit Task
+                </h1>
+                <p className="text-sm text-sidebar-foreground/60 animate-fade-in delay-100">
+                  Task #1: Write a function to calculate the factorial of a number
+                </p>
+              </div>
+            </div>
+            {/* Submit Button với animation */}
+            <div className="flex justify-end animate-slide-left">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="group bg-gradient-to-r from-sidebar-primary to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-sidebar-primary/20 hover:shadow-xl hover:shadow-sidebar-primary/30 hover:scale-105"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white" />
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <>
+                      <FaPlay className="text-xs group-hover:translate-x-1 transition-transform duration-300" />
+                      <span>Submit Task</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-//       if (response.status === "Approved") {
-//         refreshBalance();
-//         toast.success("Task submitted successfully!");
-//       }
+        {/* Main Grid với animation */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up">
+          {/* Editor Panel */}
+          <div className="bg-sidebar/20 backdrop-blur-2xl rounded-xl border border-sidebar-border/50 shadow-xl overflow-hidden group hover:border-sidebar-primary/50 transition-all duration-300 hover:shadow-2xl animate-fade-in">
+            <div className="border-b border-sidebar-border/50 px-4 py-3 flex items-center justify-between bg-sidebar/30">
+              <div className="flex items-center gap-3">
+                <div className="bg-sidebar-primary/20 p-1.5 rounded-lg">
+                  <FaCode className="text-sm text-sidebar-primary" />
+                </div>
+                <span className="text-sidebar-foreground text-sm font-medium">Code Editor</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  className="bg-sidebar/30 border border-sidebar-border/50 rounded-lg px-3 py-1.5 text-sm text-sidebar-foreground focus:outline-none focus:ring-1 focus:ring-sidebar-primary focus:border-transparent transition-all duration-300 hover:bg-sidebar/40"
+                >
+                  <option value="python">Python</option>
+                  <option value="javascript">JavaScript</option>
+                </select>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+                </div>
+              </div>
+            </div>
+            <div
+              ref={editorRef}
+              className="font-mono text-sm p-4 min-h-[500px] max-h-[600px] overflow-auto focus:outline-none transition-all duration-300"
+              style={{
+                fontFamily: '"Fira Code", monospace',
+                whiteSpace: 'pre',
+              }}
+            />
+          </div>
 
-//     } catch (error) {
-//       console.error(error);
-//       toast.error("An error occurred while submitting the task. Please try again!");
-//     }
-//   };
+          {/* Output Panel */}
+          <div className="bg-sidebar/20 backdrop-blur-2xl rounded-xl border border-sidebar-border/50 shadow-xl overflow-hidden group hover:border-sidebar-primary/50 transition-all duration-300 hover:shadow-2xl animate-fade-in delay-150">
+            <div className="border-b border-sidebar-border/50 px-4 py-3 flex items-center justify-between bg-sidebar/30">
+              <div className="flex items-center gap-3">
+                <div className="bg-sidebar-primary/20 p-1.5 rounded-lg">
+                  <FaTerminal className="text-sm text-sidebar-primary" />
+                </div>
+                <span className="text-sidebar-foreground text-sm font-medium">Console Output</span>
+              </div>
+              <div className="px-2 py-0.5 rounded-full bg-sidebar/40 text-xs text-sidebar-foreground/60">
+                Terminal
+              </div>
+            </div>
+            <pre className="font-mono text-sm p-4 min-h-[500px] max-h-[600px] overflow-auto text-sidebar-foreground">
+              {output || 'Output will appear here...'}
+            </pre>
+          </div>
+        </div>
+      </div>
 
-//   return (
-//     <div className="grid grid-cols-1 gap-6 relative z-10 mt-6 overflow-y-auto">
-//       <ToastContainer position="top-right" autoClose={5000} theme="dark" />
-//       <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow">
-//         <h2 className="text-2xl font-semibold mb-4 flex items-center text-white">
-//           <FaCloudUploadAlt className="mr-2 text-blue-400" /> Submit New Task
-//         </h2>
+      <style jsx global>{`
+        .codejar-wrap::-webkit-scrollbar,
+        pre::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
+        /* ... phần style còn lại giữ nguyên ... */
 
-//         <div className="text-gray-300 space-y-4 mb-6">
-//           <p>
-//             Need extra computing power? Let dpin's distributed network handle
-//             your resource-intensive tasks. Our global network of GPU nodes is
-//             ready to tackle your computational challenges quickly and
-//             efficiently.
-//           </p>
-//           <p>Benefits of submitting tasks to dpin:</p>
-//           <ul className="list-none space-y-2">
-//             <li className="flex items-center">
-//               <FaMicrochip className="mr-2 text-blue-400" />
-//               Access to high-performance GPU computing power on demand
-//             </li>
-//             <li className="flex items-center">
-//               <FaCoins className="mr-2 text-blue-400" />
-//               Cost-effective solution for resource-intensive tasks
-//             </li>
-//             <li className="flex items-center">
-//               <FaCloudUploadAlt className="mr-2 text-blue-400" />
-//               Faster processing times compared to traditional methods
-//             </li>
-//             <li className="flex items-center">
-//               <FaMicrochip className="mr-2 text-blue-400" />
-//               Scalable resources to meet your project needs
-//             </li>
-//           </ul>
-//           <p>
-//             Simply fill out the form below to submit your task. Choose the task
-//             type, specify the required compute units, and set your reward in APT
-//             tokens.
-//           </p>
-//         </div>
+        /* Animation Keyframes */
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
 
-//         <form className="space-y-4" onSubmit={handleSubmit}>
-//           <div>
-//             <label className="block mb-1 text-gray-300">Task Type</label>
-//             <select
-//               name="task_type"
-//               className="w-full p-2 border rounded bg-white bg-opacity-10 border-gray-600 text-white"
-//             >
-//               <option value={1}>Machine Learning</option>
-//               <option value={2}>Data Processing</option>
-//               <option value={3}>Rendering</option>
-//             </select>
-//           </div>
-//           <div>
-//             <label className="block mb-1 text-gray-300">Compute Units</label>
-//             <input
-//               name="compute_units"
-//               type="number"
-//               className="w-full p-2 border rounded bg-white bg-opacity-10 border-gray-600 text-white"
-//               placeholder="Enter required compute units"
-//             />
-//           </div>
-//           <div>
-//             <label className="block mb-1 text-gray-300">Reward (APT)</label>
-//             <input
-//               name="reward"
-//               type="number"
-//               className="w-full p-2 border rounded bg-white bg-opacity-10 border-gray-600 text-white"
-//               placeholder="Enter reward amount in APT"
-//             />
-//           </div>
-//           <button className="bg-blue-500 bg-opacity-80 text-white px-4 py-2 rounded hover:bg-blue-600 w-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
-//             Submit Task
-//           </button>
-//         </form>
+        @keyframes slide-down {
+          from { 
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to { 
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
-//         <div className="mt-6 text-sm text-gray-400 flex items-start">
-//           <FaInfoCircle className="mr-2 mt-1 flex-shrink-0" />
-//           <p>
-//             Task completion time may vary based on network availability and task
-//             complexity. Larger rewards may incentivize faster processing. For
-//             more information on task types and pricing, please refer to our
-//             documentation.
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+        @keyframes slide-up {
+          from { 
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to { 
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slide-left {
+          from { 
+            opacity: 0;
+            transform: translateX(20px);
+          }
+          to { 
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes pulse-slow {
+          0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.8;
+            transform: scale(0.95);
+          }
+        }
+
+        /* Animation Classes */
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out forwards;
+        }
+
+        .animate-slide-down {
+          animation: slide-down 0.6s ease-out forwards;
+        }
+
+        .animate-slide-up {
+          animation: slide-up 0.6s ease-out forwards;
+          animation-delay: 0.2s;
+          opacity: 0;
+        }
+
+        .animate-slide-left {
+          animation: slide-left 0.6s ease-out forwards;
+        }
+
+        .animate-pulse-slow {
+          animation: pulse-slow 3s ease-in-out infinite;
+        }
+
+        .delay-150 {
+          animation-delay: 0.15s;
+        }
+
+        /* Hover Animations */
+        .hover\:scale-105:hover {
+          transform: scale(1.05);
+          transition: transform 0.3s ease;
+        }
+
+        /* Transition Improvements */
+        .transition-all {
+          transition-duration: 300ms;
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+      `}</style>
+    </div>
+  );
+}
+

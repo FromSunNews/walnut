@@ -43,6 +43,7 @@ root.render(
           <Provider store={store}>
             <App />
           </Provider>
+          <Toaster />
         </WalletProvider>
       </SuiClientProvider>
     </QueryClientProvider>
