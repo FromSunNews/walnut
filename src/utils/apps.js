@@ -285,7 +285,7 @@ const apps = [
     icon: "github",
     type: "app",
     action: "EXTERNAL",
-    payload: "https://github.com/Weminal-labs/walmove",
+    payload: "https://github.com/FromSunNews/walnet",
   },
   {
     name: "Unescape",
@@ -325,24 +325,13 @@ const apps = [
     type: "app",
     action: "WALLET",
   },
-  {
-    name: "Aptogotchi",
-    icon: "aptogotchi",
-    type: "app",
-    action: "APTOGOTCHI",
-  },
-  {
-    name: "Move Explorer",
-    icon: "move_explorer",
-    type: "app",
-    action: "MOVE_EXPLORER",
-  },
-  {
-    name: "My Collection",
-    icon: "collection",
-    type: "app",
-    action: "COLLECTION",
-  },
+
+  // {
+  //   name: "My Collection",
+  //   icon: "collection",
+  //   type: "app",
+  //   action: "COLLECTION",
+  // },
   {
     name: "X",
     icon: "x",
@@ -350,20 +339,15 @@ const apps = [
     action: "EXTERNAL",
     payload: "https://x.com/Walnet363756",
   },
+  // {
+  //   name: "Wecastle",
+  //   icon: "wecastle",
+  //   type: "app",
+  //   action: "WECASTLE",
+  // },
+
   {
-    name: "Wecastle",
-    icon: "wecastle",
-    type: "app",
-    action: "WECASTLE",
-  },
-  {
-    name: "Social Move",
-    icon: "socialmove",
-    type: "app",
-    action: "SOCIALMOVE",
-  },
-  {
-    name: "MovementDNet",
+    name: "SuiDNet",
     icon: "movementdnet",
     type: "app",
     action: "MOVEMENTDNET",

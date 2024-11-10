@@ -21,7 +21,7 @@ var { taskbar, desktop, pinned, recent } = {
       // "My Wallet",
       // "Wecastle",
       // "Social SUI",
-      "MovementDNet",
+      // "MovementDNet",
       // "Github",
       // "X",
     ],

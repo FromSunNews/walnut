@@ -126,7 +126,7 @@
       }
 
       @for $i from 1 to 12 {
-        .navLink:nth-child(#{$i}).selected~.marker {
+        .navLink:nth-child(#{$i}).selected ~ .marker {
           transform: translateY(((40 * ($i - 1)) + 12) + px);
         }
       }
@@ -277,9 +277,7 @@
           }
 
           .selected {
-            box-shadow:
-              0 0 0 2px var(--bg),
-              0 0 0 4px var(--clrPrm);
+            box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--clrPrm);
             border-radius: 2px;
           }
         }
