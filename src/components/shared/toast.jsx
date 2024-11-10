@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva } from "class-variance-authority";
-import { X } from "lucide-react";
+import { X, CheckCircle2, AlertCircle, Info, AlertTriangle } from "lucide-react";
 
 import { ClassNameUtils } from "../../utils/class_name";
 
@@ -24,9 +24,11 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: "border bg-white text-foreground",
-        destructive:
-          "destructive group border-destructive bg-destructive text-destructive-foreground",
+        default: "bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100",
+        success: "bg-neutral-900 border-green-500 text-neutral-900 dark:text-neutral-100",
+        error: "bg-neutral-900 border-red-500 text-neutral-900 dark:text-neutral-100",
+        warning: "bg-neutral-900 border-yellow-500 text-neutral-900 dark:text-neutral-100",
+        info: "bg-neutral-900 border-blue-500 text-neutral-900 dark:text-neutral-100",
       },
     },
     defaultVariants: {
@@ -35,13 +37,44 @@ const toastVariants = cva(
   }
 );
 
-const Toast = React.forwardRef(({ className, variant, ...props }, ref) => {
+// Icon mapping cho các variant
+const ToastIcon = ({ variant }) => {
+  const iconProps = {
+    className: ClassNameUtils.cn(
+      "h-5 w-5 mr-3",
+      variant === "success" && "text-green-500",
+      variant === "error" && "text-red-500",
+      variant === "warning" && "text-yellow-500",
+      variant === "info" && "text-blue-500"
+    )
+  };
+
+  switch (variant) {
+    case "success":
+      return <CheckCircle2 {...iconProps} />;
+    case "error":
+      return <AlertCircle {...iconProps} />;
+    case "warning":
+      return <AlertTriangle {...iconProps} />;
+    case "info":
+      return <Info {...iconProps} />;
+    default:
+      return null;
+  }
+};
+
+const Toast = React.forwardRef(({ className, variant, children, ...props }, ref) => {
   return (
     <ToastPrimitives.Root
       ref={ref}
       className={ClassNameUtils.cn(toastVariants({ variant }), className)}
       {...props}
-    />
+    >
+      <div className="flex items-center">
+        <ToastIcon variant={variant} />
+        {children}
+      </div>
+    </ToastPrimitives.Root>
   );
 });
 Toast.displayName = ToastPrimitives.Root.displayName;
@@ -62,7 +95,7 @@ const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
   <ToastPrimitives.Close
     ref={ref}
     className={ClassNameUtils.cn(
-      "absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
+      "absolute right-2 top-2 rounded-md p-1 text-white opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
       className
     )}
     toast-close=""
@@ -76,7 +109,7 @@ ToastClose.displayName = ToastPrimitives.Close.displayName;
 const ToastTitle = React.forwardRef(({ className, ...props }, ref) => (
   <ToastPrimitives.Title
     ref={ref}
-    className={ClassNameUtils.cn("text-sm font-semibold", className)}
+    className={ClassNameUtils.cn("text-sm font-semibold text-white", className)}
     {...props}
   />
 ));
@@ -85,7 +118,7 @@ ToastTitle.displayName = ToastPrimitives.Title.displayName;
 const ToastDescription = React.forwardRef(({ className, ...props }, ref) => (
   <ToastPrimitives.Description
     ref={ref}
-    className={ClassNameUtils.cn("text-sm opacity-90", className)}
+    className={ClassNameUtils.cn("text-sm opacity-90 text-white", className)}
     {...props}
   />
 ));

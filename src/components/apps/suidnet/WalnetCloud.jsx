@@ -16,12 +16,14 @@ import ReactCountryFlag from "react-country-flag";
 import { MdCloud, MdLocationOn, MdMemory } from "react-icons/md";
 import { StepProgress } from "./StepProgress";
 import { toast } from "../../shared/use-toast";
-
-// Import components
-
-// Import hooks
-
-// Import utils
+import {
+  Clock,
+  Target,
+  Shield,
+  Wallet
+} from 'lucide-react';
+import { useDeployCluster } from '../../../hooks/useDeployCluster';
+import { useCurrentAccount } from "@mysten/dapp-kit";
 
 export default function WalnetCloud() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -31,6 +33,7 @@ export default function WalnetCloud() {
   const [selectedProcessor, setSelectedProcessor] = useState(null);
   const [searchProcessor, setSearchProcessor] = useState("");
   const [selectedType, setSelectedType] = useState("all");
+  const account = useCurrentAccount();
 
   const processors = [
     { id: 1, name: "M2 Pro", count: 38, type: "apple" },
@@ -151,59 +154,23 @@ export default function WalnetCloud() {
     }
   };
 
-  // const handleDeployCluster = async () => {
-  //   if (!account) {
-  // toast.error("Please connect your wallet first!");
-  //     return;
-  //   }
+  const { deployCluster, isDeploying } = useDeployCluster({
+    onSuccess: () => {
+      // Reset states after successful deployment
+      setSelectedClusterType(null);
+      setSelectedLocations([]);
+      setSelectedProcessor(null);
+      setCurrentStep(1);
+    }
+  });
 
-  //   // Convert selectedClusterType to uint256
-
-  //   // Combine selected locations into a string
-  //   const location = selectedLocations.join(",");
-
-  //   if (!selectedClusterType || !location || !selectedProcessor) {
-  //     toast({
-  //       title: "Input Error",
-  //       description: "Please fill in all cluster information!",
-  //     });
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await signAndSubmitTransaction({
-  //       sender: account.address,
-  //       data: {
-  //         function: `${MovementDNetABI.address}::network::register_cluster`,
-  //         typeArguments: [],
-  //         functionArguments: [selectedClusterType, selectedProcessor, location],
-  //       },
-  //     });
-
-  //     await aptosClient().waitForTransaction({
-  //       transactionHash: response.hash,
-  //     });
-
-  //     refreshBalance();
-  //     toast({
-  //       title: "Transaction Success",
-  //       description: "Ray cluster has been registered successfully!",
-  //     });
-
-  //     // Reset states after successful registration
-  //     setSelectedClusterType("");
-  //     setSelectedLocations([]);
-  //     setSelectedProcessor("");
-  //     setCurrentStep(1); // Go back to the first step
-  //   } catch (error) {
-  //     console.error(error);
-  //     toast({
-  //       title: "Unknown Error",
-  //       description:
-  //         "An error occurred while registering the cluster. Please try again!",
-  //     });
-  //   }
-  // };
+  const handleDeployCluster = async () => {
+    await deployCluster(account, {
+      clusterType: selectedClusterType,
+      locations: selectedLocations,
+      processor: selectedProcessor
+    });
+  };
 
   const renderNavigationButtons = () => {
     const isFirstStep = currentStep === 1;
@@ -213,7 +180,7 @@ export default function WalnetCloud() {
       <div className="flex justify-end space-x-3">
         {!isFirstStep && (
           <button
-            className="text-sm bg-white/10 text-white px-3 py-1.5 rounded-md hover:bg-white/20 transition duration-300 flex items-center"
+            className="text-base bg-sidebar/30 text-white px-3 py-1.5 rounded-md hover:bg-sidebar-foreground/10 transition duration-300 flex items-center"
             onClick={handlePreviousStep}
           >
             <FaArrowLeft className="mr-1.5 w-3 h-3" /> Back
@@ -221,7 +188,7 @@ export default function WalnetCloud() {
         )}
         {!isLastStep && (
           <button
-            className="bg-blue-600 cursor-pointer text-sm text-white px-3 py-1.5 rounded-md hover:bg-blue-700 transition duration-300 flex items-center"
+            className="bg-sidebar-primary/30 border border-sidebar-primary text-sidebar-primary-foreground cursor-pointer text-base px-3 py-1.5 rounded-md hover:bg-sidebar-primary/90 transition duration-300 flex items-center"
             onClick={handleNextStep}
           >
             Next <FaArrowRight className="ml-1.5 w-3 h-3" />
@@ -235,7 +202,7 @@ export default function WalnetCloud() {
     <div className="flex h-full">
       {/* Sidebar với StepProgress */}
       <div className="max-w-xl border-r border-white/10 p-4">
-        <h3 className="text-lg font-medium mb-4 text-white">
+        <h3 className="text-lg font-medium mb-4 text-sidebar-foreground">
           Creation Steps
         </h3>
         <div className="pr-3">
@@ -252,7 +219,7 @@ export default function WalnetCloud() {
           {/* Header */}
           <div className="flex items-start justify-between mb-6">
             <div className="space-y-1">
-              <h2 className="text-lg font-medium text-white">
+              <h2 className="text-lg font-medium text-sidebar-foreground">
                 {STEPS[currentStep - 1].title}
               </h2>
               <p className="text-base text-muted-foreground">
@@ -274,13 +241,13 @@ export default function WalnetCloud() {
                     key={type.id}
                     className={`flex items-center p-3 rounded-md cursor-pointer transition-all duration-300 ${selectedClusterType === type.id
                       ? "bg-sidebar-primary/20 border border-sidebar-primary"
-                      : "bg-sidebar/20 hover:bg-sidebar/30 border border-transparent"
+                      : "bg-sidebar/30 hover:bg-sidebar/30 border border-transparent"
                       }`}
                     onClick={() => setSelectedClusterType(type.id)}
                   >
                     <div className="flex-grow">
-                      <div className="text-base font-medium text-white">{type.name}</div>
-                      <div className="text-sm text-gray-400">{type.description}</div>
+                      <div className="text-base font-medium text-sidebar-foreground">{type.name}</div>
+                      <div className="text-sm text-muted-foreground">{type.description}</div>
                     </div>
                   </div>
                 ))}
@@ -293,20 +260,20 @@ export default function WalnetCloud() {
                   <input
                     type="text"
                     placeholder="Search location..."
-                    className="w-full bg-white/10 border border-gray-600/50 rounded-md py-2.5 pl-10 pr-4 text-base text-white placeholder-gray-400"
+                    className="w-full bg-sidebar/30 border border-white-5 rounded-md py-2.5 pl-10 pr-4 text-base text-sidebar-foreground placeholder-muted-foreground"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
-                  <FaSearch className="absolute left-3.5 top-3 text-gray-400 w-4 h-4" />
+                  <FaSearch className="absolute left-3.5 top-3 text-sidebar-foreground w-4 h-4" />
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 max-h-[320px] overflow-y-auto custom-scrollbar pr-2">
+                <div className="grid grid-cols-2 gap-2">
                   {filteredCountries.map((country) => (
                     <div
                       key={country.code}
                       className={`flex items-center p-3 rounded-md cursor-pointer transition-all duration-300 ${selectedLocations.includes(country.code)
                         ? "bg-sidebar-primary/20 border border-sidebar-primary"
-                        : "bg-sidebar/20 hover:bg-sidebar/30 border border-transparent"
+                        : "bg-sidebar/30 hover:bg-sidebar border border-transparent"
                         }`}
                       onClick={() => handleLocationSelect(country.code)}
                     >
@@ -319,7 +286,7 @@ export default function WalnetCloud() {
                         }}
                         className="mr-2.5"
                       />
-                      <span className="text-base text-gray-300">{country.name}</span>
+                      <span className="text-base text-sidebar-foreground">{country.name}</span>
                     </div>
                   ))}
                 </div>
@@ -331,8 +298,8 @@ export default function WalnetCloud() {
                 <div className="flex mb-3 space-x-1.5">
                   <button
                     className={`px-6 py-1 rounded-md text-base transition-all duration-300 ${selectedType === "all"
-                      ? "bg-blue-600 text-white"
-                      : "bg-white/10 text-gray-300 hover:bg-white/20"
+                      ? "bg-sidebar-primary/20 border border-sidebar-primary text-sidebar-foreground"
+                      : "bg-sidebar/30 hover:bg-sidebar border border-transparent text-muted-foreground"
                       }`}
                     onClick={() => setSelectedType("all")}
                   >
@@ -340,8 +307,8 @@ export default function WalnetCloud() {
                   </button>
                   <button
                     className={`flex flex-row items-center px-6 py-1 rounded-md text-base transition-all duration-300 ${selectedType === "nvidia"
-                      ? "bg-blue-600 text-white"
-                      : "bg-white/10 text-gray-300 hover:bg-white/20"
+                      ? "bg-sidebar-primary/20 border border-sidebar-primary text-sidebar-foreground"
+                      : "bg-sidebar/30 hover:bg-sidebar border border-transparent text-muted-foreground"
                       }`}
                     onClick={() => setSelectedType("nvidia")}
                   >
@@ -350,8 +317,8 @@ export default function WalnetCloud() {
                   </button>
                   <button
                     className={`flex flex-row items-center px-6 py-1 rounded-md text-base transition-all duration-300 ${selectedType === "apple"
-                      ? "bg-blue-600 text-white"
-                      : "bg-white/10 text-gray-300 hover:bg-white/20"
+                      ? "bg-sidebar-primary/20 border border-sidebar-primary text-sidebar-foreground"
+                      : "bg-sidebar/30 hover:bg-sidebar border border-transparent text-muted-foreground"
                       }`}
                     onClick={() => setSelectedType("apple")}
                   >
@@ -364,11 +331,11 @@ export default function WalnetCloud() {
                   <input
                     type="text"
                     placeholder="Search for GPU..."
-                    className="w-full bg-white/10 border border-gray-600/50 rounded-md py-1.5 pl-8 pr-3 text-base text-white placeholder-gray-400"
+                    className="w-full bg-sidebar/30 border rounded-md py-1.5 pl-8 pr-3 text-base text-sidebar-foreground placeholder-gray-400"
                     value={searchProcessor}
                     onChange={(e) => setSearchProcessor(e.target.value)}
                   />
-                  <FaSearch className="absolute left-2.5 top-[10px] text-gray-400 w-4 h-4" />
+                  <FaSearch className="absolute left-2.5 top-[10px] text-sidebar-foreground w-4 h-4" />
                 </div>
 
                 <div className="grid gap-2 grid-cols-2 pr-2 pb-4">
@@ -376,8 +343,8 @@ export default function WalnetCloud() {
                     <div
                       key={processor.id}
                       className={`flex items-center justify-between p-3 rounded-md cursor-pointer ${selectedProcessor === processor.id
-                        ? "bg-blue-600/70"
-                        : "bg-white/5 hover:bg-white/10"
+                        ? "bg-sidebar-primary/20 border border-sidebar-primary"
+                        : "bg-sidebar/30 hover:bg-sidebar border border-transparent"
                         } transition-all duration-300`}
                       onClick={() => setSelectedProcessor(processor.id)}
                     >
@@ -389,12 +356,12 @@ export default function WalnetCloud() {
                         )}
                         <div>
                           <div className="text-base text-white">{processor.name}</div>
-                          <div className="text-sm text-gray-400">
+                          <div className="text-sm text-muted-foreground">
                             {processor.type === "apple" ? "Apple Silicon" : "NVIDIA GPU"}
                           </div>
                         </div>
                       </div>
-                      <div className="text-sm text-gray-400">{processor.count}</div>
+                      <div className="text-sm text-muted-foreground">{processor.count}</div>
                     </div>
                   ))}
                 </div>
@@ -403,22 +370,17 @@ export default function WalnetCloud() {
 
             {currentStep === 4 && (
               <div className="space-y-4">
-                <div className="flex justify-between items-center mb-4">
+                {/* <div className="flex justify-between items-center mb-4">
                   <h2 className="text-base font-medium text-white">Cluster Overview</h2>
-                  <button
-                    className="bg-blue-600 cursor-pointer text-base text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 flex items-center"
-                  // onClick={handleDeployCluster}
-                  >
-                    Deploy Cluster
-                  </button>
-                </div>
+                  
+                </div> */}
 
                 <div className="space-y-4">
                   {/* Cluster Type */}
                   <div>
                     <h3 className="text-base font-medium mb-3 text-white">Cluster Type</h3>
-                    <div className="flex items-center space-x-3 bg-gray-800/50 p-3 px-4 rounded-md">
-                      <span className="text-base text-gray-300">
+                    <div className="flex items-center space-x-3 bg-sidebar/30 p-3 px-4 rounded-md">
+                      <span className="text-base text-muted-foreground">
                         {clusterTypes.find((p) => p.id === selectedClusterType)?.name || "Not selected"}
                       </span>
                     </div>
@@ -433,7 +395,7 @@ export default function WalnetCloud() {
                         return (
                           <div
                             key={locationCode}
-                            className="flex items-center space-x-2.5 bg-gray-800/50 px-4 py-2 rounded-md"
+                            className="flex items-center space-x-2.5 bg-sidebar/30 px-4 py-2 rounded-md"
                           >
                             <ReactCountryFlag
                               countryCode={locationCode}
@@ -444,12 +406,12 @@ export default function WalnetCloud() {
                               }}
                               title={country ? country.name : locationCode}
                             />
-                            <span className="text-base text-gray-300">{country ? country.name : locationCode}</span>
+                            <span className="text-base text-sidebar-foreground">{country ? country.name : locationCode}</span>
                           </div>
                         );
                       })}
                       {selectedLocations.length > 5 && (
-                        <div className="bg-gray-800/50 px-4 py-2 rounded-md text-base text-gray-300">
+                        <div className="bg-sidebar/30 px-4 py-2 rounded-md text-base text-gray-300">
                           +{selectedLocations.length - 5} more
                         </div>
                       )}
@@ -459,7 +421,7 @@ export default function WalnetCloud() {
                   {/* Cluster Processor */}
                   <div>
                     <h3 className="text-base font-medium mb-3 text-white">Cluster Processor</h3>
-                    <div className="bg-gray-800/50 p-3 px-4 rounded-md flex items-center justify-between">
+                    <div className="bg-sidebar/30 p-3 px-4 rounded-md flex items-center justify-between">
                       <div className="flex items-center space-x-2.5">
                         {selectedProcessor && (
                           <>
@@ -479,7 +441,7 @@ export default function WalnetCloud() {
                         {!selectedProcessor && <span className="text-base text-gray-300">Not selected</span>}
                       </div>
                       {selectedProcessor && (
-                        <span className="text-base text-gray-400">
+                        <span className="text-base text-sidebar-foreground">
                           {processors.find((p) => p.name === selectedProcessor)?.count || 0}
                         </span>
                       )}
@@ -488,24 +450,75 @@ export default function WalnetCloud() {
 
                   {/* Summary */}
                   <div>
-                    <h3 className="text-base font-medium mb-3 text-white">Summary</h3>
-                    <div className="space-y-3 bg-gray-800/50 p-4 rounded-md">
-                      <div className="flex justify-between items-center py-1.5">
-                        <span className="text-base text-gray-400">Duration:</span>
-                        <span className="text-base font-medium text-gray-200">168 Hours</span>
+                    <h3 className="text-lg font-medium mb-3 text-sidebar-foreground flex items-center space-x-2">
+                      <span>Summary</span>
+                    </h3>
+
+                    <div className="grid grid-cols-2 gap-4 rounded-md">
+                      {/* Duration */}
+                      <div className="bg-sidebar/20 rounded-lg p-4 hover:bg-sidebar/30 transition-all duration-300">
+                        <div className="w-10 h-10 rounded-full bg-sidebar-primary/10 flex items-center justify-center mb-3">
+                          <Clock className="w-5 h-5 text-sidebar-primary" />
+                        </div>
+                        <div className="space-y-1">
+                          <span className="text-sm text-muted-foreground">Duration</span>
+                          <div className="text-base font-medium text-sidebar-foreground">168 Hours</div>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center py-1.5">
-                        <span className="text-base text-gray-400">Cluster Purpose:</span>
-                        <span className="text-base font-medium text-gray-200">Ray</span>
+
+                      {/* Cluster Purpose */}
+                      <div className="bg-sidebar/20 rounded-lg p-4 hover:bg-sidebar/30 transition-all duration-300">
+                        <div className="w-10 h-10 rounded-full bg-sidebar-primary/10 flex items-center justify-center mb-3">
+                          <Target className="w-5 h-5 text-sidebar-primary" />
+                        </div>
+                        <div className="space-y-1">
+                          <span className="text-sm text-muted-foreground">Cluster Purpose</span>
+                          <div className="text-base font-medium text-sidebar-foreground">Ray</div>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center py-1.5">
-                        <span className="text-base text-gray-400">Security:</span>
-                        <span className="text-base font-medium text-gray-200">End-to-End Encrypted</span>
+
+                      {/* Security */}
+                      <div className="bg-sidebar/20 rounded-lg p-4 hover:bg-sidebar/30 transition-all duration-300">
+                        <div className="w-10 h-10 rounded-full bg-sidebar-primary/10 flex items-center justify-center mb-3">
+                          <Shield className="w-5 h-5 text-sidebar-primary" />
+                        </div>
+                        <div className="space-y-1">
+                          <span className="text-sm text-muted-foreground">Security</span>
+                          <div className="text-base font-medium text-sidebar-foreground">End-to-End Encrypted</div>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center py-1.5">
-                        <span className="text-base text-gray-400">Total Cost:</span>
-                        <span className="text-base font-medium text-blue-400">3.039 APT</span>
+
+                      {/* Total Cost */}
+                      <div className="bg-sidebar/20 rounded-lg p-4 hover:bg-sidebar/30 transition-all duration-300">
+                        <div className="w-10 h-10 rounded-full bg-sidebar-primary/10 flex items-center justify-center mb-3">
+                          <Wallet className="w-5 h-5 text-sidebar-primary" />
+                        </div>
+                        <div className="space-y-1">
+                          <span className="text-sm text-muted-foreground">Total Cost</span>
+                          <div className="flex items-center space-x-1">
+                            <span className="text-base font-medium text-sidebar-primary">3.039</span>
+                            <span className="text-sm text-muted-foreground">APT</span>
+                          </div>
+                        </div>
                       </div>
+                    </div>
+
+                    {/* Deploy Button */}
+                    <div className="mt-8 pb-20">
+                      <button
+                        className="w-full bg-sidebar-primary/20 border-sidebar-primary border text-sidebar-primary-foreground cursor-pointer text-base px-4 py-3 rounded-md hover:bg-sidebar-primary/90 transition-all duration-300 flex items-center justify-center font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={handleDeployCluster}
+                        disabled={isDeploying || !selectedClusterType || !selectedLocations.length || !selectedProcessor}
+                      >
+                        {isDeploying ? (
+                          <>
+                            <div className="animate-spin rounded-full h-5 w-5 border-2 border-sidebar-accent border-t-sidebar-primary-foreground mr-2"></div>
+                            <span>Deploying Cluster...</span>
+                          </>
+                        ) : (
+                          "Deploy Cluster"
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -514,6 +527,6 @@ export default function WalnetCloud() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

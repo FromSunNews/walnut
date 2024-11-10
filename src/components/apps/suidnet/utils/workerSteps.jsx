@@ -1,3 +1,4 @@
+import { Cpu } from "lucide-react";
 import {
   FaDesktop,
   FaMobileAlt,
@@ -10,6 +11,7 @@ import {
   FaCog,
   FaCheckCircle
 } from "react-icons/fa";
+import { BsGpuCard } from "react-icons/bs";
 
 // SVG Icons as components
 const UserIcon = () => (
@@ -123,11 +125,34 @@ export const OPERATING_SYSTEMS = [
   }
 ];
 
+// export const DEVICE_TYPES = [
+//   {
+//     name: "Desktop",
+//     icon: <FaDesktop className="w-5 h-5" />,
+//     description: "PC or Laptop devices",
+//     requirements: {
+//       cpu: "2 cores minimum",
+//       ram: "4GB minimum",
+//       storage: "10GB free space"
+//     }
+//   },
+//   {
+//     name: "Mobile",
+//     icon: <FaMobileAlt className="w-5 h-5" />,
+//     description: "Smartphones and tablets",
+//     requirements: {
+//       cpu: "1.5GHz minimum",
+//       ram: "3GB minimum",
+//       storage: "5GB free space"
+//     }
+//   }
+// ];
+
 export const DEVICE_TYPES = [
   {
-    name: "Desktop",
-    icon: <FaDesktop className="w-5 h-5" />,
-    description: "PC or Laptop devices",
+    name: "CPU",
+    icon: <Cpu className="w-5 h-5" />,
+    description: "Handle general tasks",
     requirements: {
       cpu: "2 cores minimum",
       ram: "4GB minimum",
@@ -135,9 +160,9 @@ export const DEVICE_TYPES = [
     }
   },
   {
-    name: "Mobile",
-    icon: <FaMobileAlt className="w-5 h-5" />,
-    description: "Smartphones and tablets",
+    name: "GPU",
+    icon: <BsGpuCard className="w-5 h-5" />,
+    description: "Handle AI tasks",
     requirements: {
       cpu: "1.5GHz minimum",
       ram: "3GB minimum",
@@ -145,6 +170,7 @@ export const DEVICE_TYPES = [
     }
   }
 ];
+
 
 export const VALIDATION_RULES = {
   deviceName: {
