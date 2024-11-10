@@ -348,7 +348,7 @@ const apps = [
 
   {
     name: "SuiDNet",
-    icon: "movementdnet",
+    icon: "suidnet",
     type: "app",
     action: "MOVEMENTDNET",
   },

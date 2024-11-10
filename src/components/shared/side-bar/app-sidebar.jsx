@@ -11,7 +11,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "../../ui/sidebar"
-import { menuItems } from '../../apps/movementdnet/utils/menuItems'
+import { menuItems } from '../../apps/suidnet/utils/menuItems'
 
 const data = {
   navMain: [

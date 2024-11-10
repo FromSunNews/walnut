@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 import { ToolBar } from "../../../utils/general";
 import "./assets/fileexpo.scss";
 import { FaNetworkWired } from "react-icons/fa";
-import { DashBoard } from "../../../components/apps/movementdnet/DashBoard";
+import { DashBoard } from "../../../components/apps/suidnet/DashBoard";
 
 // Import components
-// import TaskStatus from "../../../components/apps/movementdnet/TaskStatus";
-// import SubmitTask from "../../../components/apps/movementdnet/SubmitTask";
-// import CompleteTask from "../../../components/apps/movementdnet/CompleteTask";
-// import RegisterNode from "../../../components/apps/movementdnet/RegisterNode";
+// import TaskStatus from "../../../components/apps/suidnet/TaskStatus";
+// import SubmitTask from "../../../components/apps/suidnet/SubmitTask";
+// import CompleteTask from "../../../components/apps/suidnet/CompleteTask";
+// import RegisterNode from "../../../components/apps/suidnet/RegisterNode";
 // import {
 //   Tabs,
 //   TabsContent,
@@ -19,7 +19,7 @@ import { DashBoard } from "../../../components/apps/movementdnet/DashBoard";
 // import { Boxes } from "../../../components/shared/background-boxes";
 
 export const MovementDNet = () => {
-  const wnapp = useSelector((state) => state.apps.movementdnet);
+  const wnapp = useSelector((state) => state.apps.suidnet);
 
   return (
     <div
