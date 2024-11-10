@@ -120,7 +120,7 @@ export const StartMenu = () => {
             <div className="menuUp">
               <div className="pinnedApps">
                 <div className="stAcbar">
-                  <div className="gpname">Everything about Walmove</div>
+                  <div className="gpname">Everything about Walnet</div>
                   <div
                     className="gpbtn prtclk"
                     onClick={clickDispatch}
@@ -152,7 +152,7 @@ export const StartMenu = () => {
               </div>
               <div className="recApps win11Scroll">
                 <div className="stAcbar">
-                  <div className="gpname">Move' services</div>
+                  <div className="gpname">Walnet services</div>
                   <div className="gpbtn none">
                     <div>More</div>
                     <Icon fafa="faChevronRight" width={8} />
