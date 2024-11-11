@@ -2,21 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { ToolBar } from "../../../utils/general";
 import "./assets/fileexpo.scss";
-import { FaNetworkWired } from "react-icons/fa";
-import { DashBoard } from "../../../components/apps/suidnet/DashBoard";
-
-// Import components
-// import TaskStatus from "../../../components/apps/suidnet/TaskStatus";
-// import SubmitTask from "../../../components/apps/suidnet/SubmitTask";
-// import CompleteTask from "../../../components/apps/suidnet/CompleteTask";
-// import RegisterNode from "../../../components/apps/suidnet/RegisterNode";
-// import {
-//   Tabs,
-//   TabsContent,
-//   TabsList,
-//   TabsTrigger,
-// } from "../../../components/shared/tab-set";
-// import { Boxes } from "../../../components/shared/background-boxes";
+import { DashBoard } from "../../../components/apps/suidnet/dashboard";
 
 export const MovementDNet = () => {
   const wnapp = useSelector((state) => state.apps.suidnet);
@@ -33,7 +19,6 @@ export const MovementDNet = () => {
       data-hide={wnapp.hide}
       id={wnapp.icon + "App"}
     >
-      {/* <Boxes /> */}
       <ToolBar
         app={wnapp.action}
         icon={wnapp.icon}
@@ -43,7 +28,6 @@ export const MovementDNet = () => {
         hide_title
       />
       <DashBoard />
-
     </div>
   );
 };

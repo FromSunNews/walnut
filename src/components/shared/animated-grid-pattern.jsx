@@ -1,6 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { cn } from "../../utils/tailwind_merge"; // Adjust the import path as needed
+import { cn } from "../apps/suidnet/utils/tailwind_merge"; // Adjust the import path as needed
 
 const GridPattern = ({
   width = 40,
