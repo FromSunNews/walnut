@@ -3,7 +3,7 @@ import { Transaction } from '@mysten/sui/transactions';
 import { useSignAndExecuteTransaction } from '@mysten/dapp-kit';
 import { useToast } from "../../../shared/use-toast";
 import { useNodeApi } from "./useNodeApi";
-import { getSuiClient } from '../../../../utils/suiClient';
+import { getSuiClient } from '../utils/suiClient';
 
 /**
  * Configuration constants for Ray task execution smart contract

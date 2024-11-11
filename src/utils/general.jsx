@@ -7,7 +7,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import * as FaIcons from "@fortawesome/free-solid-svg-icons";
 import * as FaRegIcons from "@fortawesome/free-regular-svg-icons";
 import * as AllIcons from "./icons";
-import { cn } from "./tailwind_merge";
+import { cn } from "../components/apps/suidnet/utils/tailwind_merge";
 
 String.prototype.strip = function (c) {
   var i = 0,

@@ -13,7 +13,10 @@ import {
 } from "react-icons/fa";
 import { BsGpuCard } from "react-icons/bs";
 
-// SVG Icons as components
+/**
+ * Custom SVG icon components for the worker registration flow
+ * Used to provide consistent visual styling across the application
+ */
 const UserIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path d="M15.9998 7C15.9998 9.20914 14.2089 11 11.9998 11C9.79067 11 7.99981 9.20914 7.99981 7C7.99981 4.79086 9.79067 3 11.9998 3C14.2089 3 15.9998 4.79086 15.9998 7Z" stroke="currentColor" strokeWidth="1.6" />
@@ -27,6 +30,11 @@ const AuthIcon = () => (
   </svg>
 );
 
+/**
+ * Step definitions for the worker node registration process
+ * Based on Ray's worker node configuration requirements
+ * @type {Array<{id: number, title: string, description: string, icon: Component}>}
+ */
 export const STEPS = [
   {
     id: 1,
@@ -72,6 +80,11 @@ export const STEPS = [
   }
 ];
 
+/**
+ * Supported operating systems configuration for Ray worker nodes
+ * Includes system requirements based on Ray's documentation
+ * @type {Array<{name: string, icon: JSX.Element, description: string, requirements: Object}>}
+ */
 export const OPERATING_SYSTEMS = [
   {
     name: "Windows",
@@ -125,29 +138,11 @@ export const OPERATING_SYSTEMS = [
   }
 ];
 
-// export const DEVICE_TYPES = [
-//   {
-//     name: "Desktop",
-//     icon: <FaDesktop className="w-5 h-5" />,
-//     description: "PC or Laptop devices",
-//     requirements: {
-//       cpu: "2 cores minimum",
-//       ram: "4GB minimum",
-//       storage: "10GB free space"
-//     }
-//   },
-//   {
-//     name: "Mobile",
-//     icon: <FaMobileAlt className="w-5 h-5" />,
-//     description: "Smartphones and tablets",
-//     requirements: {
-//       cpu: "1.5GHz minimum",
-//       ram: "3GB minimum",
-//       storage: "5GB free space"
-//     }
-//   }
-// ];
-
+/**
+ * Device types supported for Ray cluster nodes
+ * CPU nodes for general computing and GPU nodes for AI/ML workloads
+ * @type {Array<{name: string, icon: JSX.Element, description: string, requirements: Object}>}
+ */
 export const DEVICE_TYPES = [
   {
     name: "CPU",
@@ -171,7 +166,11 @@ export const DEVICE_TYPES = [
   }
 ];
 
-
+/**
+ * Validation rules for worker node registration form
+ * Ensures data integrity and proper node configuration
+ * @type {Object}
+ */
 export const VALIDATION_RULES = {
   deviceName: {
     minLength: 3,
@@ -184,6 +183,11 @@ export const VALIDATION_RULES = {
   }
 };
 
+/**
+ * Error messages for various scenarios during worker registration
+ * Provides user-friendly feedback for error handling
+ * @type {Object}
+ */
 export const ERROR_MESSAGES = {
   walletNotConnected: "Please connect your wallet first!",
   authorizationFailed: "Failed to authorize device. Please try again.",
@@ -200,7 +204,11 @@ export const ERROR_MESSAGES = {
   authorizationTimeout: "Authorization timed out. Please try again."
 };
 
-// Thêm các constants mới nếu cần
+/**
+ * Installation status constants for tracking node setup progress
+ * Maps to Ray's node initialization states
+ * @type {Object}
+ */
 export const INSTALLATION_STATUS = {
   PENDING: 'pending',
   INSTALLING: 'installing',
@@ -208,6 +216,11 @@ export const INSTALLATION_STATUS = {
   FAILED: 'failed'
 };
 
+/**
+ * Authorization status constants for tracking node authentication
+ * Used in conjunction with blockchain transaction states
+ * @type {Object}
+ */
 export const AUTHORIZATION_STATUS = {
   PENDING: 'pending',
   AUTHORIZING: 'authorizing',
