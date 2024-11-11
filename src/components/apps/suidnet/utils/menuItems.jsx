@@ -1,19 +1,33 @@
 import React from "react"
-import { Cloud, Server, FileText, PlusCircle, LayoutDashboard } from "lucide-react"
-// import TaskStatus from "../TaskStatus"
-import WalnetWorker from "../WalnetWorker"
-import WalnetCloud from "../WalnetCloud"
-import SubmitTask from "../SubmitTask"
-import ClusterManager from "../ClusterManager"
-// import WalnetWorker from "../walletworker"
+import { Server, FileText, LayoutDashboard, Code } from "lucide-react"
+import DeployCluster from "../dashboard/cloud-workspace/deploy-cluster"
+import SubmitTask from "../dashboard/worker-workspace/submit-task"
+import UploadFile from "../dashboard/worker-workspace/upload-file"
+import RegisterWorker from "../dashboard/worker-workspace/register-worker"
+import { Overview } from "../dashboard/cloud-workspace/manage-cluster/overview"
+import { NodeStatus } from "../dashboard/cloud-workspace/manage-cluster/node-status"
+import { TaskStatus } from "../dashboard/cloud-workspace/manage-cluster/task-status"
 
+/**
+ * Menu configuration for Ray cluster management interface
+ * Defines navigation structure for both cloud and worker workspaces
+ * Based on Ray's distributed computing capabilities and dashboard features
+ */
 export const menuItems = {
+  /**
+   * Cloud workspace menu items
+   * Focused on cluster deployment and task management
+   * Features:
+   * - Cluster deployment with configurable resources
+   * - Task submission for distributed processing
+   * - File management for data and model uploads
+   */
   cloud: [
     {
       title: "Deploy Cluster",
       component: "deploy-cluster",
       path: "Deploy Cluster",
-      componentData: <WalnetCloud />,
+      componentData: <DeployCluster />,
       icon: Server,
       isActive: false,
     },
@@ -22,51 +36,68 @@ export const menuItems = {
       component: "submit-task",
       path: "Submit Task",
       componentData: <SubmitTask />,
-      icon: FileText,
+      icon: Code,
       isActive: true,
     },
     {
-      title: "Cluster Manager",
-      component: "cluster-manager",
-      path: "Cluster Manager",
-      componentData: <ClusterManager />,
-      icon: Server,
-      isActive: false,
+      title: "Upload",
+      component: "upload-file",
+      path: "Upload File",
+      componentData: <UploadFile />,
+      icon: FileText,
+      isActive: true,
     }
   ],
+
+  /**
+   * Worker workspace menu items
+   * Focused on node management and monitoring
+   * Features based on Ray Dashboard capabilities:
+   * - Worker registration and configuration
+   * - Performance monitoring
+   * - Resource utilization tracking
+   * - Task execution status
+   */
   worker: [
     {
       title: "Register Worker",
       component: "register-worker",
       path: "Register Worker",
-      componentData: <WalnetWorker />,
+      componentData: <RegisterWorker />,
       icon: Server,
       isActive: false,
     },
     {
-      title: "Dashboard",
-      path: "Dashboard",
+      title: "Manage Cluster",
+      path: "Manage Cluster",
       icon: LayoutDashboard,
       isActive: false,
       hasChildren: true,
+      /**
+       * Dashboard sub-menu items
+       * Based on Ray Dashboard monitoring features:
+       * - System overview and metrics
+       * - Node status and health monitoring
+       * - Task execution tracking
+       */
       items: [
         {
           title: "Overview",
           component: "overview",
           path: "Dashboard/Overview",
-          componentData: <div>Overview</div>
+          componentData: <Overview />
         },
         {
           title: "Node Status",
           component: "node-status",
           path: "Dashboard/Node Status",
-          componentData: <div>Node Status</div>
+          componentData: <NodeStatus />
         },
         {
           title: "Task Status",
           component: "task-status",
           path: "Dashboard/Task Status",
-          componentData: <div>Task Status</div>
+          componentData: <TaskStatus />
         }
       ]
     }

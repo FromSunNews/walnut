@@ -7,7 +7,6 @@ if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.match
 import React, { Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import App from "./App";
 import store from "./reducers";
@@ -15,16 +14,13 @@ import { Toaster } from "./components/shared/toaster";
 
 // Sui Wallet
 import {
-  createNetworkConfig,
   SuiClientProvider,
   WalletProvider,
 } from "@mysten/dapp-kit";
-import { getFullnodeUrl } from "@mysten/sui/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { getNetworkConfig } from "./components/apps/suidnet/utils/suiClient";
 
-const { networkConfig } = createNetworkConfig({
-  testnet: { url: getFullnodeUrl("testnet") },
-});
-
+const { networkConfig } = getNetworkConfig();
 const queryClient = new QueryClient();
 
 const root = createRoot(document.getElementById("root"));

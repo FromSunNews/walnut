@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import CopyIcon from "../icons/CopyIcon";
-import { cn } from "../../utils/tailwind_merge";
+import { cn } from "../apps/suidnet/utils/tailwind_merge";
 import { Lens } from "./lens";
 
 export default function NFTDemo({ data, ...props }) {
