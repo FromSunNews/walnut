@@ -4,6 +4,7 @@ import { Cloud, Server, FileText, PlusCircle, LayoutDashboard } from "lucide-rea
 import WalnetWorker from "../WalnetWorker"
 import WalnetCloud from "../WalnetCloud"
 import SubmitTask from "../SubmitTask"
+import ClusterManager from "../ClusterManager"
 // import WalnetWorker from "../walletworker"
 
 export const menuItems = {
@@ -23,6 +24,14 @@ export const menuItems = {
       componentData: <SubmitTask />,
       icon: FileText,
       isActive: true,
+    },
+    {
+      title: "Cluster Manager",
+      component: "cluster-manager",
+      path: "Cluster Manager",
+      componentData: <ClusterManager />,
+      icon: Server,
+      isActive: false,
     }
   ],
   worker: [

@@ -5,7 +5,7 @@ import { Icon, ToolBar, LazyComponent } from "../../../utils/general";
 export const EdgeMenu = () => {
   const wnapp = useSelector((state) => state.apps.edge);
   const [url, setUrl] = useState(
-    "https://landing-pagewalmove.vercel.app/"
+    "https://landing-page-docs-walnet.vercel.app/"
   );
   const [ierror, setErr] = useState(true);
   const [isTyping, setTyping] = useState(false);
@@ -13,7 +13,7 @@ export const EdgeMenu = () => {
   const dispatch = useDispatch();
 
   const iframes = {
-    "https://landing-pagewalmove.vercel.app/": "Walmove Docs",
+    "https://landing-page-docs-walnet.vercel.app/": "Walnet Docs",
     "https://www.google.com/webhp?igu=1": "Google",
     "https://bing.com": "Bing",
     "https://www.youtube.com/embed/m0EHSoZzHEA": "Youtube",
@@ -25,7 +25,7 @@ export const EdgeMenu = () => {
       "Spotify",
     "https://bluelab.blueedge.me": "BlueLab",
     "https://othello.blueedge.me": "Othello",
-    "https://algorand-racetrack.openedu101.com": "\nAlgorand",
+    // "https://algorand-racetrack.openedu101.com": "\nAlgorand",
   };
 
   const favicons = {
