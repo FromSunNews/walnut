@@ -46,6 +46,34 @@ export const menuItems = {
       componentData: <UploadFile />,
       icon: FileText,
       isActive: true,
+    },
+    {
+      title: "Manage Cluster",
+      path: "Manage Cluster",
+      icon: LayoutDashboard,
+      isActive: false,
+      hasChildren: true,
+      /**
+       * Dashboard sub-menu items
+       * Based on Ray Dashboard monitoring features:
+       * - System overview and metrics
+       * - Node status and health monitoring
+       * - Task execution tracking
+       */
+      items: [
+        {
+          title: "Overview",
+          component: "overview",
+          path: "Dashboard/Overview",
+          componentData: <Overview />
+        },
+        {
+          title: "Task Status",
+          component: "task-status",
+          path: "Dashboard/Task Status",
+          componentData: <TaskStatus />
+        }
+      ]
     }
   ],
 
