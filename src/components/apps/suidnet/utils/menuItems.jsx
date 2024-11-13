@@ -1,12 +1,12 @@
 import React from "react"
 import { Server, FileText, LayoutDashboard, Code } from "lucide-react"
-import DeployCluster from "../dashboard/cloud-workspace/deploy-cluster"
+import DeployCluster from "../dashboard/worker-workspace/deploy-cluster"
 import SubmitTask from "../dashboard/worker-workspace/submit-task"
 import UploadFile from "../dashboard/worker-workspace/upload-file"
-import RegisterWorker from "../dashboard/worker-workspace/register-worker"
-import { Overview } from "../dashboard/cloud-workspace/manage-cluster/overview"
-import { NodeStatus } from "../dashboard/cloud-workspace/manage-cluster/node-status"
-import { TaskStatus } from "../dashboard/cloud-workspace/manage-cluster/task-status"
+import RegisterWorker from "../dashboard/cloud-workspace/register-worker"
+import { Overview } from "../dashboard/worker-workspace/manage-cluster/overview"
+import { NodeStatus } from "../dashboard/worker-workspace/manage-cluster/node-status"
+import { TaskStatus } from "../dashboard/worker-workspace/manage-cluster/task-status"
 
 /**
  * Menu configuration for Ray cluster management interface

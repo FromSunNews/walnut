@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Buffer } from "buffer";
 
-const WALRUS_AGGREGATOR_ENDPOINT = "https://aggregator-devnet.walrus.space";
-const WALRUS_PUBLISHER_ENDPOINT = "https://publisher-devnet.walrus.space";
+const WALRUS_AGGREGATOR_ENDPOINT = "https://aggregator-testnet.walrus.space";
+const WALRUS_PUBLISHER_ENDPOINT = "https://publisher-testnet.walrus.space";
 const SUI_CDN_ENDPOINT = "https://cdn.suiftly.io";
 const SUI_NETWORK = "testnet";
 const SUI_TESTNET_ENDPOINT = `https://fullnode.${SUI_NETWORK}.sui.io`;

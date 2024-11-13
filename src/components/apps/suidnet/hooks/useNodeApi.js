@@ -107,6 +107,39 @@ export function useNodeApi() {
         console.error('Error executing Python code:', error);
         throw error;
       }
+    },
+
+    /**
+     * Check if application is ready on a specific node
+     * @param {string} address - User's wallet address
+     * @param {string} ip - IP address of the node
+     * @param {string} nodeType - Type of node ("header" | "worker")
+     * @returns {Promise<Object>} Response data about application status
+     * @throws {Error} If check fails
+     */
+    checkApplication: async (address, ip, nodeType) => {
+      try {
+        const response = await axios.post('/node/check-application',
+          {
+            ip,
+            nodeType
+          },
+          {
+            headers: {
+              "user-address": address
+            }
+          }
+        );
+
+        return response.data;
+      } catch (error) {
+        console.error('Error checking application:', {
+          status: error.response?.status,
+          data: error.response?.data,
+          message: error.message
+        });
+        throw error;
+      }
     }
   };
 } 

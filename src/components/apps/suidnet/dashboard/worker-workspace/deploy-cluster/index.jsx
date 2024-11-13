@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { StepProgress } from "../../components/StepProgress";
+import { useDeployCluster } from "../../../hooks/useDeployCluster";
 
 export default function DeployCluster() {
   const [currentStep, setCurrentStep] = useState(1);

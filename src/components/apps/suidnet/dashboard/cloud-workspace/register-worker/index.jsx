@@ -33,6 +33,7 @@ export default function RegisterWorker() {
   const [selectedDeviceType, setSelectedDeviceType] = useState("");
   const [nodeInfo, setNodeInfo] = useState(null);
   const [showDashboardButton, setShowDashboardButton] = useState(false);
+  const [goToDashboard, setGoToDashboard] = useState(false);
 
   const STEPS = [
     {
@@ -261,7 +262,7 @@ walnet-worker start --name "${deviceName}" --os "${selectedOS}" --type "${select
                             <h3 className="text-lg font-medium text-foreground">
                               Node Information
                             </h3>
-                            {nodeInfo && showDashboardButton && (
+                            {goToDashboard && showDashboardButton && (
                               <AnimatePresence>
                                 <motion.button
                                   initial={{ opacity: 0, y: 20 }}
@@ -378,7 +379,10 @@ walnet-worker start --name "${deviceName}" --os "${selectedOS}" --type "${select
                       <div className="mt-4">
                         <button
                           className="w-full bg-sidebar-primary/20 border border-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90 px-4 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-                          onClick={() => registerNode(account, selectedDeviceType)}
+                          onClick={() => {
+                            registerNode(account, selectedDeviceType)
+                            setGoToDashboard(true);
+                          }}
                           disabled={isAuthorizing}
                         >
                           {isAuthorizing ? (
