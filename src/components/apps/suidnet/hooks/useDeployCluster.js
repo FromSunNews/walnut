@@ -1,32 +1,11 @@
 import { useState } from 'react';
 import { Transaction } from '@mysten/sui/transactions';
 import { useSignAndExecuteTransaction } from '@mysten/dapp-kit';
-import { useToast } from "../../../shared/use-toast";
 import { useNodeApi } from "./useNodeApi";
 import { getSuiClient } from '../utils/suiClient';
+import { useToast } from '../../../shared/use-toast';
+import { CONFIG } from '../utils/config';
 
-/**
- * Configuration constants for Ray cluster deployment smart contract
- * Contains package ID and network settings for blockchain interactions
- */
-const CONFIG = {
-  PACKAGE_ID: "0xa99f7ef963817b3a72dd02c1f76350223ac00dba1c00aa56471a8a8d1284c56a",
-  MODULE_NAME: "network",
-  NETWORK_ID: "0x93996af609fc97bf69377860e599796f0c91162568f4077fe96648805bd503f6",
-};
-
-/**
- * Custom hook for deploying Ray clusters
- * Handles both cluster deployment on cloud infrastructure and blockchain transaction
- * Based on Ray's distributed computing capabilities:
- * - Supports heterogeneous clusters (CPU/GPU)
- * - Multi-cloud deployment (AWS, GCP, Azure)
- * - Auto-scaling and fault tolerance
- * 
- * @param {Object} params - Hook parameters
- * @param {Function} params.onSuccess - Callback function executed after successful deployment
- * @returns {Object} Object containing deployment function and loading state
- */
 export const useDeployCluster = ({ onSuccess }) => {
   const client = getSuiClient();
   const [isDeploying, setIsDeploying] = useState(false);
@@ -36,9 +15,7 @@ export const useDeployCluster = ({ onSuccess }) => {
         transactionBlock: bytes,
         signature,
         options: {
-          // Required for transaction feedback
           showRawEffects: true,
-          // Track changes in blockchain state
           showObjectChanges: true,
         },
       }),
@@ -46,14 +23,6 @@ export const useDeployCluster = ({ onSuccess }) => {
   const { toast } = useToast();
   const nodeApi = useNodeApi();
 
-  /**
-   * Handles errors during cluster deployment
-   * Attempts to clean up resources by destroying partially deployed clusters
-   * 
-   * @param {Error} error - The error that occurred
-   * @param {string} address - Wallet address of the cluster owner
-   * @param {string} clusterId - ID of the cluster if created
-   */
   const handleError = async (error, address, clusterId) => {
     console.error('Deployment error:', error);
 
@@ -73,26 +42,6 @@ export const useDeployCluster = ({ onSuccess }) => {
     });
   };
 
-  /**
-   * Deploys a new Ray cluster with specified configuration
-   * Process:
-   * 1. Deploy cluster on cloud infrastructure through backend
-   * 2. Register cluster on blockchain for decentralized management
-   * 3. Configure head node and worker nodes
-   * 
-   * Features supported by Ray:
-   * - Multi-node orchestration
-   * - Resource scheduling
-   * - Fault tolerance
-   * - Auto-scaling
-   * 
-   * @param {Object} account - User's wallet account
-   * @param {Object} clusterConfig - Cluster configuration
-   * @param {number} clusterConfig.clusterType - Type of Ray cluster
-   * @param {string[]} clusterConfig.locations - Geographic locations for deployment
-   * @param {number} clusterConfig.processor - CPU (0) or GPU (1) configuration
-   * @returns {Promise<void>}
-   */
   const deployCluster = async (account, clusterConfig) => {
     if (!account) {
       toast({

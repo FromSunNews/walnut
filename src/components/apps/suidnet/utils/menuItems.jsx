@@ -1,13 +1,14 @@
 import React from "react"
 import { Server, FileText, LayoutDashboard, Code } from "lucide-react"
 import DeployCluster from "../dashboard/cloud-workspace/deploy-cluster"
-import SubmitTask from "../dashboard/worker-workspace/submit-task"
-import UploadFile from "../dashboard/worker-workspace/upload-file"
+import SubmitTask from "../dashboard/cloud-workspace/submit-task"
+import UploadFile from "../dashboard/cloud-workspace/upload-file"
 import RegisterWorker from "../dashboard/worker-workspace/register-worker"
 import { Overview } from "../dashboard/cloud-workspace/manage-cluster/overview"
 import { NodeStatus } from "../dashboard/cloud-workspace/manage-cluster/node-status"
 import { TaskStatus } from "../dashboard/cloud-workspace/manage-cluster/task-status"
 import { ManageWorker } from "../dashboard/worker-workspace/manage-worker"
+import { ManageCluster } from "../dashboard/cloud-workspace/manage-cluster"
 /**
  * Menu configuration for Ray cluster management interface
  * Defines navigation structure for both cloud and worker workspaces
@@ -49,31 +50,11 @@ export const menuItems = {
     },
     {
       title: "Manage Cluster",
+      component: "manage-cluster",
       path: "Manage Cluster",
+      componentData: <ManageCluster />,
       icon: LayoutDashboard,
       isActive: false,
-      hasChildren: true,
-      /**
-       * Dashboard sub-menu items
-       * Based on Ray Dashboard monitoring features:
-       * - System overview and metrics
-       * - Node status and health monitoring
-       * - Task execution tracking
-       */
-      items: [
-        {
-          title: "Overview",
-          component: "overview",
-          path: "Dashboard/Overview",
-          componentData: <Overview />
-        },
-        {
-          title: "Task Status",
-          component: "task-status",
-          path: "Dashboard/Task Status",
-          componentData: <TaskStatus />
-        }
-      ]
     }
   ],
 
@@ -95,46 +76,47 @@ export const menuItems = {
       icon: Server,
       isActive: false,
     },
-    {
-      title: "Manage Cluster",
-      path: "Manage Cluster",
-      icon: LayoutDashboard,
-      isActive: false,
-      hasChildren: true,
-      /**
-       * Dashboard sub-menu items
-       * Based on Ray Dashboard monitoring features:
-       * - System overview and metrics
-       * - Node status and health monitoring
-       * - Task execution tracking
-       */
-      items: [
-        {
-          title: "Overview",
-          component: "overview",
-          path: "Dashboard/Overview",
-          componentData: <Overview />
-        },
-        {
-          title: "Node Status",
-          component: "node-status",
-          path: "Dashboard/Node Status",
-          componentData: <NodeStatus />
-        },
-        {
-          title: "Task Status",
-          component: "task-status",
-          path: "Dashboard/Task Status",
-          componentData: <TaskStatus />
-        }
-      ]
-    },
+    // {
+    //   title: "Manage Cluster",
+    //   path: "Manage Cluster",
+    //   icon: LayoutDashboard,
+    //   isActive: false,
+    //   hasChildren: true,
+    //   /**
+    //    * Dashboard sub-menu items
+    //    * Based on Ray Dashboard monitoring features:
+    //    * - System overview and metrics
+    //    * - Node status and health monitoring
+    //    * - Task execution tracking
+    //    */
+    //   items: [
+    //     {
+    //       title: "Overview",
+    //       component: "overview",
+    //       path: "Dashboard/Overview",
+    //       componentData: <Overview />
+    //     },
+    //     {
+    //       title: "Node Status",
+    //       component: "node-status",
+    //       path: "Dashboard/Node Status",
+    //       componentData: <NodeStatus />
+    //     },
+    //     {
+    //       title: "Task Status",
+    //       component: "task-status",
+    //       path: "Dashboard/Task Status",
+    //       componentData: <TaskStatus />
+    //     }
+    //   ]
+    // }
     {
       title: "Manage Worker",
       component: "manage-worker",
       path: "Manage Worker",
-      icon: LayoutDashboard,
-      componentData: <ManageWorker />
+      componentData: <ManageWorker />,
+      icon: Server,
+      isActive: false,
     }
   ]
 } 

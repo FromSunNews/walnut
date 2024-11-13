@@ -85,7 +85,7 @@ root.render(
   >
     <QueryClientProvider client={queryClient}>
       <SuiClientProvider networks={networkConfig}>
-        <WalletProvider>
+        <WalletProvider autoConnect>
           <Provider store={store}>
             <App />
           </Provider>

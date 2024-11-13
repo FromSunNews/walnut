@@ -25,7 +25,6 @@
     "@radix-ui/react-tabs": "^1.1.1",
     "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.1.3",
-    "@razorlabs/wallet-kit": "^0.4.1",
     "@sentry/react": "^7.118.0",
     "@sentry/tracing": "^7.114.0",
     "@tanstack/react-query": "^5.53.3",
