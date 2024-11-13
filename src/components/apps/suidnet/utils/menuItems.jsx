@@ -7,7 +7,7 @@ import RegisterWorker from "../dashboard/worker-workspace/register-worker"
 import { Overview } from "../dashboard/cloud-workspace/manage-cluster/overview"
 import { NodeStatus } from "../dashboard/cloud-workspace/manage-cluster/node-status"
 import { TaskStatus } from "../dashboard/cloud-workspace/manage-cluster/task-status"
-
+import { ManageWorker } from "../dashboard/worker-workspace/manage-worker"
 /**
  * Menu configuration for Ray cluster management interface
  * Defines navigation structure for both cloud and worker workspaces
@@ -128,6 +128,13 @@ export const menuItems = {
           componentData: <TaskStatus />
         }
       ]
+    },
+    {
+      title: "Manage Worker",
+      component: "manage-worker",
+      path: "Manage Worker",
+      icon: LayoutDashboard,
+      componentData: <ManageWorker />
     }
   ]
 } 

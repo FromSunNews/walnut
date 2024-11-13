@@ -35,10 +35,18 @@ const ProgressSquares = ({ value }) => {
 
 // Worker Details View Component
 const WorkerDetailsView = ({ worker, onBack }) => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => setIsVisible(true), 100);
+    }, []);
+
     return (
         <div className="min-h-screen">
             {/* Header */}
-            <div className="flex items-center gap-4 p-4 border-b border-sidebar-border/50">
+            <div className={`flex items-center gap-4 p-4 border-b border-sidebar-border/50
+                transition-all duration-500 transform ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
+                }`}>
                 <button
                     onClick={onBack}
                     className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -52,7 +60,8 @@ const WorkerDetailsView = ({ worker, onBack }) => {
             <div className="p-6">
                 <div className="space-y-6">
                     {/* Basic Info Section */}
-                    <div>
+                    <div className={`transition-all duration-500 delay-100 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                        }`}>
                         <h1 className="text-2xl font-semibold mb-4">
                             {worker.role}: {worker.id}
                         </h1>
@@ -68,7 +77,8 @@ const WorkerDetailsView = ({ worker, onBack }) => {
                     </div>
 
                     {/* System Requirements & Specs */}
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className={`grid grid-cols-2 gap-6 transition-all duration-500 delay-200 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                        }`}>
                         {/* Minimum Requirements Card */}
                         <div className="bg-sidebar/20 rounded-lg p-6 border border-sidebar-border/50">
                             <h3 className="text-lg font-medium mb-4">Minimum Requirements</h3>
@@ -109,7 +119,8 @@ const WorkerDetailsView = ({ worker, onBack }) => {
                     </div>
 
                     {/* Components & Ports */}
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className={`grid grid-cols-2 gap-6 transition-all duration-500 delay-300 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                        }`}>
                         {/* Components Card */}
                         <div className="bg-sidebar/20 rounded-lg p-6 border border-sidebar-border/50">
                             <h3 className="text-lg font-medium mb-4">Components</h3>
@@ -140,7 +151,9 @@ const WorkerDetailsView = ({ worker, onBack }) => {
                     </div>
 
                     {/* Performance Metrics */}
-                    <div className="bg-sidebar/20 rounded-lg p-6 border border-sidebar-border/50">
+                    <div className={`bg-sidebar/20 rounded-lg p-6 border border-sidebar-border/50
+                        transition-all duration-500 delay-400 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                        }`}>
                         <h3 className="text-lg font-medium mb-4">Performance Metrics</h3>
                         <div className="grid grid-cols-2 gap-6">
                             {Object.entries(worker.performance).map(([key, value]) => (
@@ -187,11 +200,11 @@ const ClusterManager = () => {
     // Fake data for workers
     const workers = [
         {
-            id: "head-node-01",
-            name: "head-node",
+            id: "i-0a1b2c3d4",
+            name: "worker-0a1b2c3d",
             instanceType: "t3.2xlarge",
             type: "CPU",
-            processor: "Intel Xeon",
+            processor: "x86_64",
             status: "running",
             uptime: "2 hrs 15 mins",
             role: "Head Node",
@@ -202,33 +215,33 @@ const ClusterManager = () => {
                 storage: 60
             },
             components: [
-                "kube-apiserver",
-                "etcd",
-                "kube-scheduler",
-                "kube-controller-manager",
                 "kubelet",
                 "kube-proxy",
-                "container-runtime"
+                "container-runtime",
+                "kube-apiserver",
+                "etcd"
             ],
             ports: [
                 { port: 6443, protocol: "TCP", service: "Kubernetes API server" },
                 { port: "2379-2380", protocol: "TCP", service: "etcd server client API" },
-                { port: 10250, protocol: "TCP", service: "Kubelet API" },
-                { port: 10259, protocol: "TCP", service: "kube-scheduler" },
-                { port: 10257, protocol: "TCP", service: "kube-controller-manager" }
+                { port: 10250, protocol: "TCP", service: "Kubelet API" }
             ],
             minRequirements: {
-                cpu: "2 cores",
-                memory: "2GB",
-                storage: "20GB"
+                cpu: "4 cores",
+                memory: "8GB",
+                storage: "50GB"
+            },
+            network: {
+                ip: "172.31.16.25",
+                securityGroups: ["sg-0a1b2c3d4"]
             }
         },
         {
-            id: "worker-node-01",
-            name: "worker-node-01",
+            id: "i-1e2f3g4h5",
+            name: "worker-1e2f3g4h",
             instanceType: "p3.2xlarge",
             type: "GPU",
-            processor: "NVIDIA V100",
+            processor: "x86_64",
             status: "running",
             uptime: "1 hr 30 mins",
             role: "Worker Node",
@@ -241,31 +254,36 @@ const ClusterManager = () => {
             components: [
                 "kubelet",
                 "kube-proxy",
-                "container-runtime"
+                "container-runtime",
+                "nvidia-container-toolkit"
             ],
             ports: [
                 { port: 10250, protocol: "TCP", service: "Kubelet API" },
                 { port: "30000-32767", protocol: "TCP", service: "NodePort Services" }
             ],
             minRequirements: {
-                cpu: "1 core",
-                memory: "1GB",
-                storage: "20GB"
+                cpu: "8 cores",
+                memory: "16GB",
+                storage: "100GB"
+            },
+            network: {
+                ip: "172.31.16.26",
+                securityGroups: ["sg-1e2f3g4h5"]
             }
         },
         {
-            id: "worker-node-02",
-            name: "worker-node-02",
-            instanceType: "p3.2xlarge",
-            type: "GPU",
-            processor: "NVIDIA V100",
+            id: "i-5i6j7k8l9",
+            name: "worker-5i6j7k8l",
+            instanceType: "c6g.2xlarge",
+            type: "CPU",
+            processor: "arm64",
             status: "running",
             uptime: "5 hrs 20 mins",
             role: "Worker Node",
             performance: {
                 cpu: 78,
                 memory: 64,
-                gpu: 90,
+                network: 90,
                 storage: 40
             },
             components: [
@@ -278,9 +296,13 @@ const ClusterManager = () => {
                 { port: "30000-32767", protocol: "TCP", service: "NodePort Services" }
             ],
             minRequirements: {
-                cpu: "1 core",
-                memory: "1GB",
-                storage: "20GB"
+                cpu: "8 cores",
+                memory: "16GB",
+                storage: "80GB"
+            },
+            network: {
+                ip: "172.31.16.27",
+                securityGroups: ["sg-5i6j7k8l9"]
             }
         }
     ];
