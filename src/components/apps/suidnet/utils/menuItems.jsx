@@ -4,11 +4,11 @@ import DeployCluster from "../dashboard/cloud-workspace/deploy-cluster"
 import SubmitTask from "../dashboard/cloud-workspace/submit-task"
 import UploadFile from "../dashboard/cloud-workspace/upload-file"
 import RegisterWorker from "../dashboard/worker-workspace/register-worker"
-import { Overview } from "../dashboard/cloud-workspace/manage-cluster/overview"
-import { NodeStatus } from "../dashboard/cloud-workspace/manage-cluster/node-status"
-import { TaskStatus } from "../dashboard/cloud-workspace/manage-cluster/task-status"
+// import { Overview } from "../dashboard/cloud-workspace/manage-cluster/overview"
+// import { NodeStatus } from "../dashboard/cloud-workspace/manage-cluster/node-status"
+// import { TaskStatus } from "../dashboard/cloud-workspace/manage-cluster/task-status"
 import { ManageWorker } from "../dashboard/worker-workspace/manage-worker"
-import { ManageCluster } from "../dashboard/cloud-workspace/manage-cluster"
+import ManageCluster from "../dashboard/cloud-workspace/manage-cluster/overview"
 /**
  * Menu configuration for Ray cluster management interface
  * Defines navigation structure for both cloud and worker workspaces
