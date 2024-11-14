@@ -76,32 +76,16 @@ const WorkerDetailsView = ({ worker, onBack }) => {
                         </div>
                     </div>
 
-                    {/* System Requirements & Specs */}
-                    <div className={`grid grid-cols-2 gap-6 transition-all duration-500 delay-200 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-                        }`}>
-                        {/* Minimum Requirements Card */}
+                    {/* System Specifications */}
+                    <div className={`grid grid-cols-2 gap-6 transition-all duration-500 delay-200 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+                        {/* Instance Info Card */}
                         <div className="bg-sidebar/20 rounded-lg p-6 border border-sidebar-border/50">
-                            <h3 className="text-lg font-medium mb-4">Minimum Requirements</h3>
+                            <h3 className="text-lg font-medium mb-4">Instance Information</h3>
                             <div className="space-y-3">
                                 <div className="flex justify-between">
-                                    <span className="text-muted-foreground">CPU:</span>
-                                    <span>{worker.minRequirements.cpu}</span>
+                                    <span className="text-muted-foreground">Instance ID:</span>
+                                    <span>{worker.id}</span>
                                 </div>
-                                <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Memory:</span>
-                                    <span>{worker.minRequirements.memory}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Storage:</span>
-                                    <span>{worker.minRequirements.storage}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Current Specs Card */}
-                        <div className="bg-sidebar/20 rounded-lg p-6 border border-sidebar-border/50">
-                            <h3 className="text-lg font-medium mb-4">Current Specifications</h3>
-                            <div className="space-y-3">
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Instance Type:</span>
                                     <span>{worker.instanceType}</span>
@@ -116,26 +100,28 @@ const WorkerDetailsView = ({ worker, onBack }) => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Network Info Card */}
+                        <div className="bg-sidebar/20 rounded-lg p-6 border border-sidebar-border/50">
+                            <h3 className="text-lg font-medium mb-4">Network Information</h3>
+                            <div className="space-y-3">
+                                <div className="flex justify-between">
+                                    <span className="text-muted-foreground">IP Address:</span>
+                                    <span>{worker.network.ip}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-muted-foreground">Location:</span>
+                                    <span>{worker.network.location}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Components & Ports */}
                     <div className={`grid grid-cols-2 gap-6 transition-all duration-500 delay-300 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
                         }`}>
-                        {/* Components Card */}
-                        <div className="bg-sidebar/20 rounded-lg p-6 border border-sidebar-border/50">
-                            <h3 className="text-lg font-medium mb-4">Components</h3>
-                            <div className="space-y-2">
-                                {worker.components.map((component, index) => (
-                                    <div key={index} className="flex items-center gap-2">
-                                        <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                                        <span>{component}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Ports Card */}
-                        <div className="bg-sidebar/20 rounded-lg p-6 border border-sidebar-border/50">
+                        {/* Ports Card - now takes full width */}
+                        <div className="col-span-2 bg-sidebar/20 rounded-lg p-6 border border-sidebar-border/50">
                             <h3 className="text-lg font-medium mb-4">Required Ports</h3>
                             <div className="space-y-3">
                                 {worker.ports.map((port, index) => (
@@ -214,26 +200,14 @@ const ClusterManager = () => {
                 network: 75,
                 storage: 60
             },
-            components: [
-                "kubelet",
-                "kube-proxy",
-                "container-runtime",
-                "kube-apiserver",
-                "etcd"
-            ],
             ports: [
                 { port: 6443, protocol: "TCP", service: "Kubernetes API server" },
                 { port: "2379-2380", protocol: "TCP", service: "etcd server client API" },
                 { port: 10250, protocol: "TCP", service: "Kubelet API" }
             ],
-            minRequirements: {
-                cpu: "4 cores",
-                memory: "8GB",
-                storage: "50GB"
-            },
             network: {
                 ip: "172.31.16.25",
-                securityGroups: ["sg-0a1b2c3d4"]
+                location: "ap-southeast-1a"
             }
         },
         {
@@ -251,24 +225,13 @@ const ClusterManager = () => {
                 gpu: 85,
                 storage: 45
             },
-            components: [
-                "kubelet",
-                "kube-proxy",
-                "container-runtime",
-                "nvidia-container-toolkit"
-            ],
             ports: [
                 { port: 10250, protocol: "TCP", service: "Kubelet API" },
                 { port: "30000-32767", protocol: "TCP", service: "NodePort Services" }
             ],
-            minRequirements: {
-                cpu: "8 cores",
-                memory: "16GB",
-                storage: "100GB"
-            },
             network: {
                 ip: "172.31.16.26",
-                securityGroups: ["sg-1e2f3g4h5"]
+                location: "ap-southeast-1b"
             }
         },
         {
@@ -286,23 +249,13 @@ const ClusterManager = () => {
                 network: 90,
                 storage: 40
             },
-            components: [
-                "kubelet",
-                "kube-proxy",
-                "container-runtime"
-            ],
             ports: [
                 { port: 10250, protocol: "TCP", service: "Kubelet API" },
                 { port: "30000-32767", protocol: "TCP", service: "NodePort Services" }
             ],
-            minRequirements: {
-                cpu: "8 cores",
-                memory: "16GB",
-                storage: "80GB"
-            },
             network: {
                 ip: "172.31.16.27",
-                securityGroups: ["sg-5i6j7k8l9"]
+                location: "ap-southeast-1c"
             }
         }
     ];
