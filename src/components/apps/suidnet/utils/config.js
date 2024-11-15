@@ -1,0 +1,17 @@
+// devnet
+// const CONFIG = {
+//   PACKAGE_ID: "0x414aa9e21acd639ca12183669acb48a067e33e7f5060045e13dcc0d8c3457806",
+//   MODULE_NAME: "network",
+//   NODE_REGISTRY_ID: "0x6dcb8fa83446bcc561c9d8370256e09e31f50138668005b1aed73f4a853a598a",
+//   NETWORK_ID: "0x8a34d36edefdab8bf0309a8281f002e2cabe570c0f02b52ed45abeb60b63cd11",
+//   CLOCK_ID: "0x6"
+// };
+
+// testnet
+export const CONFIG = {
+  PACKAGE_ID: "0xbaa7be771b4d490807f5762bbff8d3339f7a96e2d95d780aa3d4ed671027bb0d",
+  MODULE_NAME: "network",
+  NODE_REGISTRY_ID: "0xe2d49f68bb601e628989c621890a6b0c39a6ab52db3ff9be658850dc7a8d732b",
+  NETWORK_ID: "0x038992f1d4900b5fa02592ad9dc58dcf26cfe55db787aa95295cb8f17fa71033",
+  CLOCK_ID: "0x6"
+};

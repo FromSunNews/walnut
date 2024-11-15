@@ -1,6 +1,5 @@
 import { combineReducers, createStore } from "redux";
 
-import accountReducer from "./account";
 import wallReducer from "./wallpaper";
 import taskReducer from "./taskbar";
 import deskReducer from "./desktop";
@@ -14,7 +13,6 @@ import settReducer from "./settings";
 import fileReducer from "./files";
 
 const allReducers = combineReducers({
-  account: accountReducer,
   wallpaper: wallReducer,
   taskbar: taskReducer,
   desktop: deskReducer,

@@ -1,3 +1,4 @@
+
 export const gene_name = () =>
   Math.random().toString(36).substring(2, 10).toUpperCase();
 
@@ -285,7 +286,7 @@ const apps = [
     icon: "github",
     type: "app",
     action: "EXTERNAL",
-    payload: "https://github.com/Weminal-labs/walmove",
+    payload: "https://github.com/FromSunNews/walnet",
   },
   {
     name: "Unescape",
@@ -325,24 +326,13 @@ const apps = [
     type: "app",
     action: "WALLET",
   },
-  {
-    name: "Aptogotchi",
-    icon: "aptogotchi",
-    type: "app",
-    action: "APTOGOTCHI",
-  },
-  {
-    name: "Move Explorer",
-    icon: "move_explorer",
-    type: "app",
-    action: "MOVE_EXPLORER",
-  },
-  {
-    name: "My Collection",
-    icon: "collection",
-    type: "app",
-    action: "COLLECTION",
-  },
+
+  // {
+  //   name: "My Collection",
+  //   icon: "collection",
+  //   type: "app",
+  //   action: "COLLECTION",
+  // },
   {
     name: "X",
     icon: "x",
@@ -350,29 +340,39 @@ const apps = [
     action: "EXTERNAL",
     payload: "https://x.com/Walnet363756",
   },
+  // {
+  //   name: "Wecastle",
+  //   icon: "wecastle",
+  //   type: "app",
+  //   action: "WECASTLE",
+  // },
+
   {
-    name: "Aptodigi",
-    icon: "aptodigi",
-    type: "app",
-    action: "APTODIGI",
-  },
-  {
-    name: "Wecastle",
-    icon: "wecastle",
-    type: "app",
-    action: "WECASTLE",
-  },
-  {
-    name: "Social Move",
-    icon: "socialmove",
-    type: "app",
-    action: "SOCIALMOVE",
-  },
-  {
-    name: "MovementDNet",
-    icon: "movementdnet",
+    name: "SuiDNet",
+    icon: "suidnet",
     type: "app",
     action: "MOVEMENTDNET",
+  },
+  {
+    name: "Sui Scan",
+    icon: "sui_scan",
+    type: "app",
+    action: "EXTERNAL",
+    payload: "https://suiscan.xyz/",
+  },
+  {
+    name: "Sui Vision",
+    icon: "sui_vision",
+    type: "app",
+    action: "EXTERNAL",
+    payload: "https://suivision.xyz/",
+  },
+  {
+    name: "Sui Explorer",
+    icon: "sui_explorer",
+    type: "app",
+    action: "EXTERNAL",
+    payload: "https://suiexplorer.com/",
   },
   // {
   //   name: "Dorahacks",

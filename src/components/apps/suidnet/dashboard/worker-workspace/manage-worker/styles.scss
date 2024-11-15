@@ -1,0 +1,64 @@
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Task Detail Dialog
+.task-detail {
+  &-backdrop {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  &-content {
+    animation: slideIn 0.3s ease-out;
+  }
+
+  &-header {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  &-section {
+    animation: slideUp 0.5s ease-out forwards;
+
+    @for $i from 1 through 4 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 100}ms;
+      }
+    }
+  }
+}
+
+// Hover effects
+.job-row {
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(var(--sidebar-rgb), 0.2);
+    cursor: pointer;
+  }
+}
