@@ -4,9 +4,9 @@ import { MIST_PER_SUI } from '@mysten/sui/utils';
 
 // Khởi tạo các networks
 const networks = {
-  testnet: { url: getFullnodeUrl("testnet") },
-  mainnet: { url: getFullnodeUrl("mainnet") },
-  devnet: { url: getFullnodeUrl("devnet") }
+  testnet: { url: "https://rpc-testnet.suiscan.xyz:443" },
+  mainnet: { url: "https://rpc-mainnet.suiscan.xyz:443" },
+  devnet: { url: "https://rpc-devnet.suiscan.xyz:443" }
 };
 
 // Tạo singleton instance

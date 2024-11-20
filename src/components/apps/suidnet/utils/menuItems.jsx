@@ -1,5 +1,5 @@
 import React from "react"
-import { Server, FileText, LayoutDashboard, Code } from "lucide-react"
+import { Server, FileText, LayoutDashboard, Code, Upload, FileUpIcon } from "lucide-react"
 import DeployCluster from "../dashboard/cloud-workspace/deploy-cluster"
 import SubmitTask from "../dashboard/cloud-workspace/submit-task"
 import UploadFile from "../dashboard/cloud-workspace/upload-file"
@@ -40,11 +40,11 @@ export const menuItems = {
       isActive: true,
     },
     {
-      title: "Upload",
+      title: "Upload To Walrus",
       component: "upload-file",
       path: "Upload File",
       componentData: <UploadFile />,
-      icon: FileText,
+      icon: Upload,
       isActive: true,
     }
   ],
