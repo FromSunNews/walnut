@@ -1,3 +1,4 @@
+
 export const gene_name = () =>
   Math.random().toString(36).substring(2, 10).toUpperCase();
 
@@ -351,6 +352,27 @@ const apps = [
     icon: "suidnet",
     type: "app",
     action: "MOVEMENTDNET",
+  },
+  {
+    name: "Sui Scan",
+    icon: "sui_scan",
+    type: "app",
+    action: "EXTERNAL",
+    payload: "https://suiscan.xyz/",
+  },
+  {
+    name: "Sui Vision",
+    icon: "sui_vision",
+    type: "app",
+    action: "EXTERNAL",
+    payload: "https://suivision.xyz/",
+  },
+  {
+    name: "Sui Explorer",
+    icon: "sui_explorer",
+    type: "app",
+    action: "EXTERNAL",
+    payload: "https://suiexplorer.com/",
   },
   // {
   //   name: "Dorahacks",

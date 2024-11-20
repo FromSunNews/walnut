@@ -4,9 +4,11 @@ import DeployCluster from "../dashboard/cloud-workspace/deploy-cluster"
 import SubmitTask from "../dashboard/cloud-workspace/submit-task"
 import UploadFile from "../dashboard/cloud-workspace/upload-file"
 import RegisterWorker from "../dashboard/worker-workspace/register-worker"
-import { Overview } from "../dashboard/worker-workspace/manage-cluster/overview"
-import { NodeStatus } from "../dashboard/worker-workspace/manage-cluster/node-status"
-import { TaskStatus } from "../dashboard/worker-workspace/manage-cluster/task-status"
+// import { Overview } from "../dashboard/worker-workspace/manage-cluster/overview"
+// import { NodeStatus } from "../dashboard/worker-workspace/manage-cluster/node-status"
+// import { TaskStatus } from "../dashboard/worker-workspace/manage-cluster/task-status"
+import ManageCluster from "../dashboard/cloud-workspace/manage-cluster/overview"
+import { ManageWorker } from "../dashboard/worker-workspace/manage-worker"
 
 /**
  * Menu configuration for Ray cluster management interface
@@ -46,6 +48,14 @@ export const menuItems = {
       componentData: <UploadFile />,
       icon: Upload,
       isActive: true,
+    },
+    {
+      title: "Manage Cluster",
+      component: "manage-cluster",
+      path: "Manage Cluster",
+      componentData: <ManageCluster />,
+      icon: LayoutDashboard,
+      isActive: false,
     }
   ],
 
@@ -67,39 +77,47 @@ export const menuItems = {
       icon: Server,
       isActive: false,
     },
+    // {
+    //   title: "Manage Cluster",
+    //   path: "Manage Cluster",
+    //   icon: LayoutDashboard,
+    //   isActive: false,
+    //   hasChildren: true,
+    //   /**
+    //    * Dashboard sub-menu items
+    //    * Based on Ray Dashboard monitoring features:
+    //    * - System overview and metrics
+    //    * - Node status and health monitoring
+    //    * - Task execution tracking
+    //    */
+    //   items: [
+    //     {
+    //       title: "Overview",
+    //       component: "overview",
+    //       path: "Dashboard/Overview",
+    //       componentData: <Overview />
+    //     },
+    //     {
+    //       title: "Node Status",
+    //       component: "node-status",
+    //       path: "Dashboard/Node Status",
+    //       componentData: <NodeStatus />
+    //     },
+    //     {
+    //       title: "Task Status",
+    //       component: "task-status",
+    //       path: "Dashboard/Task Status",
+    //       componentData: <TaskStatus />
+    //     }
+    //   ]
+    // }
     {
-      title: "Manage Cluster",
-      path: "Manage Cluster",
-      icon: LayoutDashboard,
+      title: "Manage Worker",
+      component: "manage-worker",
+      path: "Manage Worker",
+      componentData: <ManageWorker />,
+      icon: Server,
       isActive: false,
-      hasChildren: true,
-      /**
-       * Dashboard sub-menu items
-       * Based on Ray Dashboard monitoring features:
-       * - System overview and metrics
-       * - Node status and health monitoring
-       * - Task execution tracking
-       */
-      items: [
-        {
-          title: "Overview",
-          component: "overview",
-          path: "Dashboard/Overview",
-          componentData: <Overview />
-        },
-        {
-          title: "Node Status",
-          component: "node-status",
-          path: "Dashboard/Node Status",
-          componentData: <NodeStatus />
-        },
-        {
-          title: "Task Status",
-          component: "task-status",
-          path: "Dashboard/Task Status",
-          componentData: <TaskStatus />
-        }
-      ]
     }
   ]
 } 
