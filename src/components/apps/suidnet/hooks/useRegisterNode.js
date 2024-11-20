@@ -82,7 +82,7 @@ export const useRegisterNode = ({ onSuccess }) => {
     });
   };
 
-  const registerNode = async (account, selectedDeviceType) => {
+  const registerNode = async (account, selectedDeviceType, deviceName, osType) => {
     if (!account) {
       toast({
         variant: "error",
@@ -102,6 +102,7 @@ export const useRegisterNode = ({ onSuccess }) => {
       if (!objectsExist) {
         throw new Error("Required objects not found on network");
       }
+      console.log("account.address", account.address)
       // 1. Register node with backend
       const backendResponse = await nodeApi.registerNode(account.address);
       // const backendResponse = {
@@ -141,6 +142,9 @@ export const useRegisterNode = ({ onSuccess }) => {
           tx.object(CONFIG.NODE_REGISTRY_ID),
           tx.object(CONFIG.NETWORK_ID),
           tx.pure.string(nodeInstance.ip),
+          tx.pure.string(nodeInstance.id),
+          tx.pure.string(deviceName),
+          tx.pure.string(osType),
           tx.pure.u8(selectedDeviceType === "CPU" ? 0 : 1),
           tx.object(CONFIG.CLOCK_ID),
         ],

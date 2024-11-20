@@ -15,6 +15,7 @@ export function useNodeApi() {
      * @throws {Error} If registration fails
      */
     registerNode: async (address) => {
+      console.log("address registerNode", address)
       try {
         const response = await axios.post('/node/register', {}, {
           headers: {
@@ -89,12 +90,13 @@ export function useNodeApi() {
      * @returns {Promise<Object>} Response data containing execution results
      * @throws {Error} If execution fails
      */
-    executePython: async (address, code, headerIp) => {
+    executePython: async (address, code, headerIp, taskId) => {
       try {
         const response = await axios.post('/task/execute-python',
           {
+            taskId,
+            headerIp,
             code,
-            headerIp
           },
           {
             headers: {

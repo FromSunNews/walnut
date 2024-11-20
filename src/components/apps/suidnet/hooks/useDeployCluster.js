@@ -106,10 +106,13 @@ export const useDeployCluster = ({ onSuccess }) => {
       tx.moveCall({
         target: `${CONFIG.PACKAGE_ID}::${CONFIG.MODULE_NAME}::register_cluster`,
         arguments: [
-          tx.object(CONFIG.NETWORK_ID),
+          tx.object(CONFIG.NETWORK_ID), // network
           tx.pure.u8(clusterType), // cluster_type
           tx.pure.u8(processor), // cluster_processor
           tx.pure.string(locations.join(',')), // location
+          tx.pure.string(clusterInstance.ip), // head_node_ip
+          tx.pure.option('u64', 1), // head_node_id
+          tx.object(CONFIG.CLOCK_ID), // clock
         ],
       });
 
@@ -125,12 +128,12 @@ export const useDeployCluster = ({ onSuccess }) => {
             if (result) {
               // Lưu vào localStorage để sử dụng sau này
               localStorage.setItem('header_node_ip', clusterInstance.ip);
+              onSuccess?.(clusterInstance);
               toast({
                 variant: "success",
                 title: "Success",
                 description: "Cluster deployed successfully"
               });
-              onSuccess?.(clusterInstance);
             } else {
               throw new Error("Transaction failed");
             }

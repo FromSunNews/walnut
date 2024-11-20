@@ -30,7 +30,7 @@ export const useExecutePython = ({ onSuccess }) => {
     toast({
       variant: "error",
       title: "Error",
-      description: error?.message || "Cannot execute code. Please try again."
+      description: "Application does not ready!"
     });
   };
 
@@ -53,34 +53,26 @@ export const useExecutePython = ({ onSuccess }) => {
       // 1. Check if application is ready on header node
       const headerIp = localStorage.getItem('header_node_ip');
       const applicationStatus = await nodeApi.checkApplication(account.address, headerIp, "header");
-      // Kiểm tra response status
-      if (applicationStatus.code !== 200) {
-        throw new Error(applicationStatus?.data?.status || 'Failed to check application status');
-      }
+      // Check response status
       console.log("Application status:", applicationStatus);
-
-      // 2. execute Python code
-      const executionResponse = await nodeApi.executePython(account.address, code, headerIp);
-      if (!executionResponse.success) {
-        throw new Error("Code execution failed");
+      if (applicationStatus.code !== 200) {
+        throw new Error('Application does not ready!');
       }
 
-      onSuccess?.(executionResponse.data);
-
-      // 3. Create transaction
+      // 2. Create transaction
       const tx = new Transaction();
       tx.moveCall({
         target: `${CONFIG.PACKAGE_ID}::${CONFIG.MODULE_NAME}::submit_task`,
         arguments: [
           tx.object(CONFIG.NETWORK_ID),
-          tx.pure.u64(1), // Default clusterId = 1 for now
+          tx.pure.u64(1),
           tx.pure.u8(clusterConfig.processor),
           tx.pure.u64(clusterConfig.clusterType),
           tx.pure.u64(clusterConfig.rewardAmount),
         ],
       });
 
-      // 4. Execute transaction
+      // 3. Execute transaction
       await signAndExecuteTransaction(
         {
           transaction: tx,
@@ -90,6 +82,17 @@ export const useExecutePython = ({ onSuccess }) => {
           onSuccess: async (result) => {
             console.log("Transaction result:", result);
             if (result) {
+              // get taskId from smartcontract
+              // const taskId = await nodeApi.getTaskId(account.address, headerIp);
+              const taskId = "x0232481258"
+              // 4. execute Python code
+              const executionResponse = await nodeApi.executePython(account.address, code, headerIp, taskId);
+              if (!executionResponse.success) {
+                throw new Error("Code execution failed");
+              }
+
+              onSuccess?.(executionResponse.data);
+
               toast({
                 variant: "success",
                 title: "Success",

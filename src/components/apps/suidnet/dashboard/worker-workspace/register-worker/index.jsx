@@ -380,7 +380,7 @@ walnet-worker start --name "${deviceName}" --os "${selectedOS}" --type "${select
                         <button
                           className="w-full bg-sidebar-primary/20 border border-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90 px-4 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                           onClick={() => {
-                            registerNode(account, selectedDeviceType)
+                            registerNode(account, selectedDeviceType, deviceName, selectedOS)
                             setGoToDashboard(true);
                           }}
                           disabled={isAuthorizing}
