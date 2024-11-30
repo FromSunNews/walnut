@@ -43,15 +43,19 @@ const config = ({ mode }) => {
       },
     },
     build: {
-      target: ["esnext"], // 👈 build.target
+      target: ["esnext"],
       outDir: "build",
       rollupOptions: {
         output: {
-          manualChunks: (id) => {
-            return "vendor";
-          },
+          manualChunks: {
+            vendor: [
+              'react',
+              'react-dom'
+            ],
+          }
         },
       },
+      chunkSizeWarningLimit: 1000,
     },
   });
 };
