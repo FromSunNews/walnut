@@ -45,7 +45,7 @@ export default function UploadFile() {
     {
       id: 'model',
       title: 'Upload Model',
-      description: 'Upload your model to Walrus for distributed training and inference',
+      description: 'Upload your model for distributed training and inference',
       component: <UploadModel />,
       icon: <Brain className="w-8 h-8" />,
       bgColor: 'bg-white-5',

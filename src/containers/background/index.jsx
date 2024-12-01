@@ -11,23 +11,38 @@ import {
   useWallets,
 } from "@mysten/dapp-kit";
 
+// export const Background = () => {
+//   const wall = useSelector((state) => state.wallpaper);
+//   const dispatch = useDispatch();
+
+//   return (
+//     <div className="background">
+//       <video autoPlay loop muted playsInline className="absolute w-full h-full object-cover">
+//         <source src="https://cdn.prod.website-files.com/6425f546844727ce5fb9e5ab/6568a1c859ceca16cf4653d6_Var6-transcode.mp4" type="video/mp4" />
+//       </video>
+//       <img
+//         src="img/asset/sui.png"
+//         className="absolute top-6 right-6 w-auto h-14"
+//         alt="Sui Logo"
+//       />
+//     </div>
+//   );
+// };
+
 export const Background = () => {
   const wall = useSelector((state) => state.wallpaper);
   const dispatch = useDispatch();
 
   return (
-    <div className="background">
-      <video autoPlay loop muted playsInline className="absolute w-full h-full object-cover">
-        <source src="https://cdn.prod.website-files.com/6425f546844727ce5fb9e5ab/6568a1c859ceca16cf4653d6_Var6-transcode.mp4" type="video/mp4" />
-      </video>
-      <img
-        src="img/asset/sui.png"
-        className="absolute top-6 right-6 w-auto h-14"
-        alt="Sui Logo"
-      />
-    </div>
+    <div
+      className="background"
+      style={{
+        backgroundImage: `url(img/wallpaper/${wall.src})`,
+      }}
+    ></div>
   );
 };
+
 
 export const BootScreen = (props) => {
   const dispatch = useDispatch();
@@ -134,11 +149,11 @@ export const LockScreen = (props) => {
 
   return (
     <div
-      className={"lockscreen realtive flex justify-center items-center" + (props.dir == -1 ? "slowfadein" : "")}
+      className={"lockscreen realtive flex justify-center items-center bg-black/10 backdrop-blur-lg" + (props.dir == -1 ? "slowfadein" : "")}
       data-unlock={unlocked}
-      style={{
-        backgroundImage: `url(${`img/wallpaper/lock.jpg`})`,
-      }}
+      // style={{
+      // backgroundImage: `url(${`/img/wallpaper/lock.png`})`,
+      // }}
       onClick={action}
       data-action="splash"
       data-blur={lock}
@@ -159,12 +174,12 @@ export const LockScreen = (props) => {
           })}
         </div>
       </div>
-      <div className="fadeinScreen backdrop-blur-sm bg-black/30 p-8 rounded-2xl shadow-2xl" data-faded={!lock} data-unlock={unlocked}>
+      <div className="fadeinScreen backdrop-blur-sm bg-black/20 p-8 rounded-2xl shadow-2xl" data-faded={!lock} data-unlock={unlocked}>
         {/* Avatar */}
         <div className="relative group">
           <Image
-            className="rounded-full overflow-hidden border-4 border-white/20 shadow-lg transform transition-all duration-300 group-hover:scale-105"
-            src="img/icon/walrus.png"
+            className="rounded-full object-cover overflow-hidden border-4 border-white/20 shadow-lg transform transition-all duration-300 group-hover:scale-105"
+            src="/avatar/crat.png"
             w={150}
             h={150}
             ext

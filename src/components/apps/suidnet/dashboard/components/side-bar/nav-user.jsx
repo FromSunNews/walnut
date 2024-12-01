@@ -114,7 +114,7 @@ export function NavUser({
                 <Wallet className="mr-2 size-4" />
                 Balance
                 <span className="ml-auto text-xs text-muted-foreground">
-                  {balance} SUI
+                  {balance}
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem>

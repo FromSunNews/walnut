@@ -39,7 +39,7 @@ export const STEPS = [
   {
     id: 1,
     title: "Connect New Worker",
-    description: "Connect running walnet services, you can install more service packages to have more earnings and hiring rate.",
+    description: "Connect running walnut services, you can install more service packages to have more earnings and hiring rate.",
     icon: UserIcon
   },
   {

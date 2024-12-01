@@ -5,7 +5,7 @@ import { Icon, ToolBar, LazyComponent } from "../../../utils/general";
 export const EdgeMenu = () => {
   const wnapp = useSelector((state) => state.apps.edge);
   const [url, setUrl] = useState(
-    "https://landing-page-docs-walnet.vercel.app/"
+    "https://landing-page-docs-walnut.vercel.app/"
   );
   const [ierror, setErr] = useState(true);
   const [isTyping, setTyping] = useState(false);
@@ -13,26 +13,22 @@ export const EdgeMenu = () => {
   const dispatch = useDispatch();
 
   const iframes = {
-    "https://landing-page-docs-walnet.vercel.app/": "Walnet Docs",
-    "https://www.google.com/webhp?igu=1": "Google",
-    "https://bing.com": "Bing",
-    "https://www.youtube.com/embed/m0EHSoZzHEA": "Youtube",
-    "https://blueedge.me": "blueedge",
-    "https://andrewstech.me": "\nandrewstech",
-    "https://blueedge.me/unescape": "Unescape",
-    "https://win11.blueedge.me": "Inception",
-    "https://open.spotify.com/embed/user/jhfivkgdtg4s97pwbo1rbvr9v/playlist/6IdR78TOog83PV4XhLDvWN":
-      "Spotify",
-    "https://bluelab.blueedge.me": "BlueLab",
-    "https://othello.blueedge.me": "Othello",
-    // "https://algorand-racetrack.openedu101.com": "\nAlgorand",
+    // "https://landing-page-docs-walnut.vercel.app/": "Walnut Docs",
+    // "https://www.google.com/webhp?igu=1": "Google",
+    // "https://bing.com": "Bing",
+    // "https://www.youtube.com/embed/m0EHSoZzHEA": "Youtube",
+    // "https://blueedge.me": "blueedge",
+    // "https://andrewstech.me": "\nandrewstech",
+    // "https://blueedge.me/unescape": "Unescape",
+    // "https://win11.blueedge.me": "Inception",
+    // "https://open.spotify.com/embed/user/jhfivkgdtg4s97pwbo1rbvr9v/playlist/6IdR78TOog83PV4XhLDvWN":
+    //   "Spotify",
+    // "https://bluelab.blueedge.me": "BlueLab",
+    // "https://othello.blueedge.me": "Othello"
   };
 
   const favicons = {
-    "https://andrewstech.me":
-      "https://avatars.githubusercontent.com/u/45342431",
-    "https://algorand-racetrack.openedu101.com":
-      "https://algorandtechnologies.com/assets/media-kit/logos/logo-marks/png/algorand_logo_mark_black.png",
+    // "https://andrewstech.me": "/avatar/crat.png"
   };
 
   const isValidURL = (string) => {

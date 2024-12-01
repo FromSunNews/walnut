@@ -1,7 +1,7 @@
 {
-  "name": "win11react",
-  "description": "Walnet",
-  "repository": "https://github.com/blueedgetechno/win11React",
+  "name": "walnut-app",
+  "description": "Walnut App - Decentralized Computing Power for AI & ML",
+  "repository": "https://github.com/Walnut-Network/landing-page-docs-walnut",
   "version": "0.1.1",
   "private": true,
   "dependencies": {

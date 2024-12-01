@@ -49,7 +49,7 @@ export function TeamSwitcher({ onWorkspaceChange }) {
             >
               {/* <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"> */}
               {/* <activeWorkspace.icon className="size-4" /> */}
-              <img src="/walnet_icon.png" alt={activeWorkspace.name} className="size-8" />
+              <img src="/logo/logo.png" alt={activeWorkspace.name} className="size-8" />
               {/* </div> */}
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">

@@ -17,7 +17,7 @@ import { menuItems } from "../../../utils/menuItems"
 const data = {
   navMain: [
     {
-      title: "Walnet Cloud",
+      title: "Walnut Cloud",
       url: "#",
       icon: Cloud,
       items: [
@@ -34,7 +34,7 @@ const data = {
       ],
     },
     {
-      title: "Walnet Worker",
+      title: "Walnut Worker",
       url: "#",
       icon: Server,
       items: [
@@ -52,7 +52,7 @@ const data = {
     }
   ],
   user: {
-    name: "Walnet",
+    name: "Walnut",
     email: "m@example.com",
     avatar: "img/icon/walrus.png"
   }

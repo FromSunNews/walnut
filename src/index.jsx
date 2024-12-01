@@ -33,10 +33,9 @@ root.render(
         <div className="relative w-24 h-24 mb-8">
           <div className="absolute inset-0">
             <img
-              src="img/asset/sui.png"
+              src="/logo/logo.png"
               className="w-full h-full object-contain animate-pulse"
-              alt="Sui Logo"
-              style={{ filter: 'brightness(0) invert(1)' }}
+              alt="Walnut Logo"
             />
           </div>
           {/* Spinning Ring */}

@@ -14,12 +14,12 @@ var { taskbar, desktop, pinned, recent } = {
   desktop: (localStorage.getItem("desktop") &&
     JSON.parse(localStorage.getItem("desktop"))) || [
       "Browser",
-      "SuiDNet",
+      "WalnutDApp",
       "Github",
       "X",
-      "Sui Scan",
-      "Sui Vision",
-      "Sui Explorer",
+      // "Sui Scan",
+      // "Sui Vision",
+      // "Sui Explorer",
     ],
   pinned: (localStorage.getItem("pinned") &&
     JSON.parse(localStorage.getItem("pinned"))) || [

@@ -42,7 +42,7 @@ export const menuItems = {
       isActive: true,
     },
     {
-      title: "Upload To Walrus",
+      title: "Upload",
       component: "upload-file",
       path: "Upload File",
       componentData: <UploadFile />,

@@ -39,7 +39,7 @@ export default function RegisterWorker() {
     {
       id: 1,
       title: "Connect New Worker",
-      description: "Connect running walnet services, you can install more service packages to have more earnings and hiring rate.",
+      description: "Connect running walnut services, you can install more service packages to have more earnings and hiring rate.",
       icon: MdSearch
     },
     {
@@ -244,8 +244,8 @@ export default function RegisterWorker() {
                 </p>
                 <pre className="bg-sidebar/30 border border-white-5 p-4 rounded-md overflow-x-auto">
                   <code className="text-base text-sidebar-foreground">
-                    {`curl -sSL https://walnet/install.sh | bash
-walnet-worker start --name "${deviceName}" --os "${selectedOS}" --type "${selectedDeviceType}"`}
+                    {`curl -sSL https://walnut/install.sh | bash
+walnut-worker start --name "${deviceName}" --os "${selectedOS}" --type "${selectedDeviceType}"`}
                   </code>
                 </pre>
               </div>

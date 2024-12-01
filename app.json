@@ -1,9 +1,13 @@
 {
-  "name": "Walnet",
-  "description": "Move ecosystem",
+  "name": "Walnut App",
+  "description": "Walnut App - Decentralized Computing Power for AI & ML",
   "repository": "https://github.com/blueedgetechno/win11React",
   "logo": "https://cdn.discordapp.com/icons/868499076432408627/330fbfea1aa14cc574e8d3053283ee72.png",
-  "keywords": ["Walnet", "React", "open-source"],
+  "keywords": [
+    "Walnut App",
+    "React",
+    "open-source"
+  ],
   "engines": {
     "npm": "5.x"
   }
